@@ -1,0 +1,55 @@
+generated: '2026-09-19'
+method: searched
+source: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/ (api_project.json + curl examples
+  in api_data.json) + https://bitbucket.org/airmeedevs/airmee-php-sdk documentation/configuration.rst
+name: Airmee Integration API staging environment
+description: 'Airmee runs a full staging copy of the Integration API on a separate host. The apidoc project description
+  states the rule verbatim: "For respective production url omit ''staging-'' prefix", and every published curl example
+  targets the staging host. Nothing else about the sandbox is published — no test place_id, no test JWT, no fixture
+  zip codes beyond the 11428 (Stockholm) used in one example, and no time-simulation tooling. Both hosts answer
+  identically to unauthenticated calls (HTTP 401 {"message":"Unauthorized"}), so a JWT for the staging place is
+  needed before anything can be exercised.'
+environments:
+- name: staging
+  base_url: https://staging-api.airmee.com/integration
+  purpose: integration testing
+  auth: place-scoped JWT (issued by Airmee; not self-serve)
+  probed: '2026-09-19'
+  http_status_unauthenticated: 401
+- name: production
+  base_url: https://api.airmee.com/integration
+  purpose: live bookings
+  auth: place-scoped JWT (issued by Airmee; not self-serve)
+  probed: '2026-09-19'
+  http_status_unauthenticated: 401
+mode_selection: separate host (staging- prefix), not a key prefix or header; the first-party PHP SDK exposes it
+  as a boolean `sandbox` config parameter
+test_credentials_published: false
+test_fixtures_published: false
+time_simulation: false
+self_serve_signup: false
+note: Credentials for either environment come from Airmee's onboarding for a retailer/TA integration (the site's
+  only path is "Contact sales"); there is no developer sign-up.
+sdk_support:
+  package: airmee/php-sdk
+  parameter: sandbox
+  type: bool
+  default: true
+  published_behaviour: 'Verbatim from the SDK documentation: "In sandbox mode, requests are submitted to the staging
+    API endpoint at https://staging-api.airmee.com rather than the production API. Useful for testing without incurring
+    real costs or having real vans turn up at your stores for pickups! Note that this is true by default."'
+  credential_parameter: auth.jwt
+  endpoint_overrides:
+  - endpoint.staging
+  - endpoint.production
+  override_note: 'Verbatim: endpoint.production "should only set this if your Airmee account manager advises you
+    to."'
+  source: https://bitbucket.org/airmeedevs/airmee-php-sdk/src/master/documentation/configuration.rst
+safety_note: The provider states plainly that a production booking dispatches a real vehicle to a real store. With
+  no idempotency key and no order-read operation (see conventions/airmee-conventions.yml), the sandbox host is the
+  only safe rehearsal surface this API has.
+example_values_published:
+  place_id: 14cab45e-1392-486e-bb83-cfdaf53d92b5 — the SDK documentation labels it "Example, not actually a recognised
+    place"
+  zip_code: 11428 (Stockholm), used in a published curl example
+  country: SE

@@ -1,0 +1,63 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Airmee Integration API
+  version: 1.0.0
+extends: ../openapi/airmee-integration-api-openapi.yml
+x-generated: '2026-09-19'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass 2026-09-19. Records what this profile ADDS on top of the faithful
+  conversion of Airmee's published apidoc document, so the conversion itself stays a clean mirror of
+  the provider's own content and every judgement is visible here. Apply to
+  openapi/airmee-integration-api-openapi.yml; never edit that file in place.
+actions:
+- target: $.info
+  description: Record the integration-behaviour rules an agent needs and that the source document does not state in one place.
+  update:
+    x-agent-notes:
+      write_operations: 3
+      idempotency: none — no Idempotency-Key header, no documented replay protection; a retried POST /request_delivery may create a second physical delivery.
+      reversibility: cancelDelivery reverses requestDelivery while the parcel is "not already picked up"; no window is published and requestReturn has no reversal at all.
+      read_back: none — no GET for an order; order_id and a consumer tracking URL are the only handles returned.
+      rehearsal: call serviceAreaAvailability, then deliveryIntervalsForCheckout, then dimensionsAndWeight before booking; pass the returned intervals through verbatim.
+      staleness: source document generated 2022-11-02 (apidoc 0.29.0); first-party SDKs frozen at 1.0.0 since 2017-04-21.
+- target: $.paths['/request_delivery'].post
+  description: Flag the one path that serves three different products, which the source document expresses as three separate apidoc groups on the same URL.
+  update:
+    x-product-variants:
+    - {product: home delivery, group: Home_deliveries, dropoff: recipient address}
+    - {product: collection point delivery, group: Collection_point_deliveries, dropoff: collection point selected from getCollectionPointsForZipCode}
+    - {product: parcel locker delivery, group: Parcel_locker_deliveries, dropoff: parcel locker selected from getParcelLockersForZipCode}
+    x-variant-note: >-
+      The three variants share one path, one method and one request schema. Which product is booked
+      is determined by the dropoff the caller supplies, not by any field that names the product.
+      The parcel-locker variant is the only one whose success response adds order.message.
+- target: $.paths['/request_delivery'].post
+  description: Name the reversal path explicitly on the operation that creates the obligation.
+  update:
+    x-reversal:
+      operation: cancelDelivery
+      path: POST /cancel_delivery
+      condition: 'the delivery has not already been picked up (published wording; no time window is stated)'
+      window: null
+- target: $.paths['/request_return'].post
+  description: Record that this write has no published reversal.
+  update:
+    x-reversal:
+      operation: null
+      note: No cancel, void or undo operation is published for returns.
+- target: $.paths['/cancel_delivery'].post
+  description: Record the scope question the source document leaves open.
+  update:
+    x-scope-note: >-
+      Documented under Home deliveries only. It takes place_id + order_id, and collection-point and
+      locker bookings return the same order.order_id shape, but the docs never say whether it
+      cancels those. Treat cross-product cancellation as unverified.
+- target: $.components.securitySchemes.jwtAuth
+  description: Record how the credential is obtained, which the source document does not say.
+  update:
+    x-provisioning:
+      self_serve: false
+      route: Airmee retailer/TA onboarding via the Contact sales form; the JWT is issued per pickup place.
+      token_endpoint: null
+      rotation_policy: not published

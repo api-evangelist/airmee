@@ -1,0 +1,104 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airmee-integration-api-openapi.yml (converted from the provider-published apidoc api_data.json) + the Airmee documentation site + probes 2026-09-19
+note: >-
+  Cross-cutting and domain standard assertions for the Airmee Integration API. Every entry is
+  decided from the contract or from a first-party page, and each `conforms` value points at the
+  exact evidence. The overall shape is a bespoke JSON API: it uses HTTP correctly, it does not use
+  any cross-cutting API standard, and it declares no logistics domain standard.
+conformance:
+- id: oauth2
+  conforms: false
+  evidence: >-
+    The only security scheme is an apiKey-in-header (a long-lived JWT sent raw in Authorization).
+    No authorization endpoint, token endpoint, grant type or scope is documented, and
+    /.well-known/oauth-authorization-server 403s (this host's 404) on every Airmee host.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns the catch-all 403 on airmee.com, www, api. and staging-api.; no OIDC anywhere.
+- id: jwt
+  conforms: partial
+  evidence: >-
+    The credential IS a JWT ("Pickup place's long lived JWT"), but nothing about its handling is
+    standard — it is sent as a raw apiKey header value with no Bearer scheme (RFC 6750), there is no
+    issuer/JWKS document, no published claim set, no expiry policy and no refresh or rotation route.
+    It is a bearer secret that happens to be JWT-shaped.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are application/json {message, extraMessage}, not application/problem+json. No type, title,
+    status, detail or instance members. See errors/airmee-problem-types.yml.
+- id: rfc8594
+  conforms: false
+  evidence: No Sunset or Deprecation response headers and no deprecation policy. See lifecycle/airmee-lifecycle.yml.
+- id: rfc9116
+  conforms: false
+  evidence: No /.well-known/security.txt on any of the seven hosts probed. See well-known/airmee-well-known.yml.
+- id: rfc9727
+  conforms: partial
+  evidence: >-
+    A valid api-catalog linkset (application/linkset+json) is served at
+    https://careers.airmee.com/.well-known/api-catalog, HTTP 200 — but it is emitted by Teamtailor
+    for its hosted careers site and describes the jobs feed, not the Airmee Integration API. Airmee
+    publishes no api-catalog for its own API.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header, no client request id, no documented replay semantics on any of the
+    three write operations. coverage none. See conventions/airmee-conventions.yml.
+- id: pagination
+  conforms: false
+  evidence: >-
+    No cursor, page or offset parameter on any operation; list-shaped reads are bounded only by an
+    optional `limit` on nearest-location lookups.
+- id: webhooks
+  conforms: false
+  evidence: No callback, webhook or event surface is documented anywhere in api_data.json.
+- id: json-api
+  conforms: false
+  evidence: Plain JSON object envelopes keyed per operation (list_of_schedules, collection_point_details, order). No JSON:API media type or document structure.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface, no OData query options.
+- id: openapi
+  conforms: partial
+  evidence: >-
+    Airmee does NOT publish an OpenAPI. It publishes an apidoc (apidocjs 0.29.0) JSON document —
+    machine-readable and complete enough to convert faithfully, which is what
+    openapi/airmee-integration-api-openapi.yml is. Recorded as partial so the distinction is
+    visible: the provider ships a machine-readable contract, just not in an API-description
+    standard.
+- id: rest
+  conforms: partial
+  evidence: >-
+    HTTP verbs are used conventionally (GET for the six lookups, POST for the three writes) and
+    status codes are meaningful (200/400/401/404/412/500). But every identifier travels as a query
+    parameter rather than a path segment, one path (/request_delivery) serves three different
+    products distinguished only by payload shape, and there is no resource a client can GET back
+    after creating it.
+domain_standards:
+  market: last-mile parcel delivery / carrier integration (Sweden)
+  declared: none
+  note: >-
+    REWARD-ONLY check, and Airmee earns nothing here — which is a finding, not a penalty. The
+    contract declares no logistics domain standard: no GS1 identifiers (SSCC, GTIN, GLN), no
+    EDIFACT IFTMIN/IFTSTA message shapes, no DCSA or Open Shipping schema, no UBL despatch advice,
+    no ISO 20022 message type, and no standard tracking-event vocabulary. Parcels are identified by
+    the retailer's own parcel_id and shipment ecomm_id — the docs explicitly map these to the
+    Swedish TA-system terms "kolli-ID" and "sändnings-ID", i.e. to local trade practice rather than
+    to a published standard. The practical consequence is that every retailer or TA system needs a
+    bespoke Airmee connector; none of the aggregators that carry Airmee (AfterShip, ClickPost,
+    Metapack, Krokedil's WooCommerce plugin) can reuse a standard mapping.
+  candidates_checked:
+  - {standard: gs1-sscc, found: false}
+  - {standard: edifact-iftmin, found: false}
+  - {standard: dcsa, found: false}
+  - {standard: ubl-despatch-advice, found: false}
+  - {standard: iso-20022, found: false}
+compliance_program:
+  published: false
+  certifications: []
+  note: >-
+    No SOC 2, ISO 27001, PCI or other certification is claimed anywhere on airmee.com or in the API
+    docs, and there is no trust centre. The only compliance content is the GDPR section of the
+    privacy policy. See regulatory/airmee-regulatory-posture.yml.

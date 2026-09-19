@@ -1,23 +1,171 @@
 aid: airmee
 name: Airmee
-description: 'Airmee is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: Airmee is a Stockholm-based last-mile delivery company (founded 2018 by Julian Lee and Adrian Prelipcean)
+  that runs same-day and next-day home delivery, outdoor parcel-locker delivery and label-less returns for e-commerce
+  retailers across Sweden — Amazon, Apotea, Adlibris, Acne Studios, Sellpy and Meds among them — on a proprietary
+  Smart Logistics Platform that route-optimises deliveries in real time and reports 99%+ fossil-free transport. Retailers
+  and transport-administration (TA) systems integrate through the Airmee Integration API on api.airmee.com, a JWT-authenticated
+  REST surface that quotes delivery intervals for a zip code at checkout, checks service-area availability and parcel
+  size thresholds, lists nearby collection points and parcel lockers, books home / locker / collection-point deliveries
+  and returns, and cancels a booking before pickup. A first-party PHP SDK and Magento 2 module are on Packagist, and
+  partner-built WooCommerce and Shopify connectors exist.
+image: https://airmee.com/assets/og-image.png
 url: https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
-- Company
-apis: []
+- Logistics
+- Last Mile Delivery
+- Shipping
+- Parcel Delivery
+- Parcel Lockers
+- Returns
+- E-Commerce
+- Same Day Delivery
+- Sweden
+- Carrier
+tags_raw:
+- logistics
+- last-mile-delivery
+- shipping
+- parcel-delivery
+- parcel-lockers
+- returns
+- e-commerce
+- same-day-delivery
+- sweden
+- carrier
+apis:
+- aid: airmee:airmee-integration-api
+  name: Airmee Integration API
+  description: The Airmee Integration API (apidoc version 0.3.0) — 12 operations for e-commerce and TA-system integrations
+    to quote delivery and return intervals for a zip code, check service-area availability and product size/weight
+    thresholds, list nearby collection points and parcel lockers, book home, collection-point and parcel-locker deliveries
+    and returns, and cancel a delivery before pickup. Authenticated with a long-lived JWT issued per pickup place.
+  humanURL: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  baseURL: https://api.airmee.com/integration
+  tags:
+  - Home Deliveries
+  - Collection Point Deliveries
+  - Parcel Locker Deliveries
+  - Returns
+  tags_raw:
+  - home-deliveries
+  - collection-point-deliveries
+  - parcel-locker-deliveries
+  - returns
+  x-evidence:
+    verified: '2026-09-19'
+    method: provider-published apidoc api_data.json converted to OpenAPI; documented routes probed live unauthenticated
+    docs_describe: 12 JWT-authenticated REST operations under /integration on staging-api.airmee.com (production omits the staging- prefix)
+    endpoint_check:
+    - url: https://api.airmee.com/integration/product_threshold_for_place?place_id=test
+      status: 401
+      body: '{"message":"Unauthorized"}'
+    - url: https://api.airmee.com/integration/delivery_intervals_for_zip_code?zip_code=11428&country=SE&place_id=test
+      status: 401
+      body: '{"message":"Unauthorized"}'
+    - url: https://api.airmee.com/integration/cancel_delivery
+      method: POST
+      status: 401
+      body: '{"message":"Unauthorized"}'
+    - url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_data.json
+      status: 200
+      note: apidoc 0.29.0 data file, 159,233 bytes, generator time 2022-11-02T08:33:57Z
+  properties:
+  - type: OpenAPI
+    url: openapi/airmee-integration-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-data.json
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-project.json
+  - type: Documentation
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: APIReference
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: Authentication
+    url: authentication/airmee-authentication.yml
+  - type: Conventions
+    url: conventions/airmee-conventions.yml
+  - type: ErrorCatalog
+    url: errors/airmee-problem-types.yml
+  - type: DataModel
+    url: data-model/airmee-data-model.yml
+  - type: Overlay
+    url: overlays/airmee-integration-api-overlay.yaml
+  - type: Sandbox
+    url: sandbox/airmee-sandbox.yml
+common:
+- type: Website
+  url: https://airmee.com/
+- type: Documentation
+  url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+- type: APIReference
+  url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+- type: Support
+  url: https://airmee.com/en/support/
+- type: Contact
+  url: https://airmee.com/en/contact/
+- type: PrivacyPolicy
+  url: https://airmee.com/en/privacy-policy/
+- type: Blog
+  url: https://airmee.com/en/news/
+- type: Careers
+  url: https://careers.airmee.com/
+- type: LinkedIn
+  url: https://se.linkedin.com/company/airmee
+- type: SourceCode
+  url: https://bitbucket.org/airmeedevs/
+- type: Authentication
+  url: authentication/airmee-authentication.yml
+- type: Conventions
+  url: conventions/airmee-conventions.yml
+- type: ErrorCatalog
+  url: errors/airmee-problem-types.yml
+- type: DataModel
+  url: data-model/airmee-data-model.yml
+- type: Lifecycle
+  url: lifecycle/airmee-lifecycle.yml
+- type: Conformance
+  url: conformance/airmee-conformance.yml
+- type: Packages
+  url: packages/airmee-packages.yml
+- type: SDKs
+  url: packages/airmee-packages.yml
+- type: Plans
+  url: plans/airmee-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/airmee-rate-limits.yml
+- type: Sandbox
+  url: sandbox/airmee-sandbox.yml
+- type: Overlay
+  url: overlays/airmee-integration-api-overlay.yaml
+- type: MCPServer
+  url: mcp/airmee-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/airmee-llms.txt
+- type: WellKnown
+  url: well-known/airmee-well-known.yml
+- type: DomainSecurity
+  url: security/airmee-domain-security.yml
+- type: RegulatoryPosture
+  url: regulatory/airmee-regulatory-posture.yml
+- type: DataSubjectRequest
+  url: https://airmee.com/en/privacy-policy/
+- type: IncidentNotification
+  url: https://airmee.com/en/privacy-policy/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://equityzen.com/company/airmee
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3

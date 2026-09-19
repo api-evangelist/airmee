@@ -1,0 +1,79 @@
+# Airmee
+
+> Airmee (legal entity Airmiz AB, Stockholm; Danish entity Airmiz Denmark ApS, CVR 42786780) is a
+> Swedish last-mile delivery company founded in 2018 by Julian Lee and Adrian Prelipcean. It runs
+> same-day and next-day home delivery, outdoor parcel-locker delivery and label-less returns for
+> e-commerce retailers across Sweden — Amazon, Apotea, Adlibris, Acne Studios, Sellpy and Meds among
+> them. Retailers and transport-administration (TA) systems integrate through the Airmee Integration
+> API: a JWT-authenticated REST surface with 12 operations for quoting delivery windows at checkout,
+> checking service area and parcel thresholds, finding collection points and lockers, and booking or
+> cancelling deliveries and returns.
+
+Not published by Airmee, recorded so an agent does not go looking: no OpenAPI (the contract is
+apidoc JSON), no GraphQL, no AsyncAPI, no webhooks, no MCP server, no A2A agent card, no status
+page, no changelog, no SLA, no pricing page, no rate limits, no security.txt, no trust centre and no
+published certifications.
+
+## APIs
+
+- [Airmee Integration API](http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/): 12 operations. Base URL https://api.airmee.com/integration (staging: https://staging-api.airmee.com/integration — the docs say the production URL is the staging URL with the `staging-` prefix omitted).
+
+## Specs
+
+- [OpenAPI 3.0.3 (converted)](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/openapi/airmee-integration-api-openapi.yml) — converted by API Evangelist from Airmee's own apidoc document; not published by Airmee.
+- [apidoc api_data.json (verbatim source)](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/openapi/airmee-apidoc-api-data.json)
+- [apidoc api_project.json (verbatim source)](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/openapi/airmee-apidoc-api-project.json)
+
+## Operations
+
+Reads (GET), all authenticated:
+
+- `serviceAreaAvailability` — `/service_area_availability_for_zip_code` — does Airmee deliver to this address for this place? Returns `inside_service_area` boolean.
+- `deliveryIntervalsForCheckout` — `/checkout_delivery_intervals_for_zip_code` — bookable delivery windows to show a consumer at checkout, with a `date` offset for how long packing takes.
+- `deliveryIntervals` — `/delivery_intervals_for_zip_code` — delivery windows for a TA system revalidating a chosen slot before booking.
+- `returnIntervals` — `/delivery_intervals_for_zip_code_returns` — pickup windows for a return.
+- `dimensionsAndWeight` — `/product_threshold_for_place` — maximum height, length, width and weight for this place.
+- `getCollectionPointsForZipCode` / `collectionPointDetails` — nearest collection points and their details.
+- `getParcelLockersForZipCode` / `parcelLockerDetails` — nearest parcel lockers and their details.
+
+Writes (POST), all authenticated:
+
+- `requestDelivery` — `/request_delivery` — books a delivery. One path serves three products (home, collection point, parcel locker); the dropoff you supply decides which. Returns `order.order_id` and `order.tracking_url`.
+- `requestReturn` — `/request_return` — books a label-less return pickup from the consumer's address.
+- `cancelDelivery` — `/cancel_delivery` — cancels a delivery that has not already been picked up.
+
+## Conventions an agent must know
+
+- Auth: a long-lived JWT issued by Airmee per pickup place, sent as the RAW value of the `Authorization` header — no `Bearer` prefix. There is no token endpoint and no self-serve signup; credentials come from retailer onboarding via Contact sales.
+- `place_id` is the tenant: 10 of the 12 operations take it, and your JWT is scoped to it.
+- **Idempotency: none.** No `Idempotency-Key`, no client request id, no documented replay protection on any of the three writes. A retried `POST /request_delivery` may create a second physical delivery. `ecomm_id` is your own order id for reconciliation, not a de-duplication key.
+- **Reversibility:** `cancelDelivery` reverses `requestDelivery` while the parcel is "not already picked up" — a state condition, with NO published time window, and no operation to observe that state. `requestReturn` has no reversal at all.
+- **No read-back:** there is no GET for an order. After a booking you hold `order_id` and a consumer tracking URL; the API tells you nothing further about the order's state.
+- Rehearse before you book: `serviceAreaAvailability` → `deliveryIntervalsForCheckout` → `dimensionsAndWeight`, then pass the returned `pickup_interval` / `dropoff_interval` verbatim into `request_delivery`.
+- Times are Unix epoch seconds; the checkout `date` offset is in `Europe/Stockholm`. Each interval also carries `formatted_as_schedule`, a pre-rendered display string.
+- `items[]` must contain one object per physical parcel; `items[].parcel_id` is the Swedish TA kolli-ID and is mandatory if you print labels yourself.
+- `checks` on a delivery requests a doorstep control — `min_age`, `verify_id`, `take_signature`.
+- Errors are `{"message": ..., "extraMessage": ...}` JSON, not RFC 9457: 400 ValidationError, 401 Unauthorized, 404 NotFoundError, 412 GeocodeError (supply latitude/longitude on the address to work around it), 500 DatabaseConnectionError. `x-amzn-requestid` on the response is the only correlation id.
+- Rate limits: none documented, no `RateLimit-*` headers, no `Retry-After`, no 429 in the contract.
+
+## Packages
+
+- [airmee/php-sdk](https://packagist.org/packages/airmee/php-sdk) — first-party, 1.0.0, released 2017-04-21. Source: bitbucket.org/airmeedevs/airmee-php-sdk.
+- [airmee/magento-2-module](https://packagist.org/packages/airmee/magento-2-module) — first-party Magento 2 shipping module, 1.0.0, released 2017-04-21.
+- [pigmentab/airmee-php-sdk](https://packagist.org/packages/pigmentab/airmee-php-sdk) — third-party continuation, 1.2.1 (2022-05-03). Not Airmee's.
+
+No npm, PyPI, RubyGems, NuGet, crates.io or Go module exists. Airmee has no GitHub organisation; first-party code is on Bitbucket (airmeedevs).
+
+## Docs
+
+- [Integration API documentation](http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/) — apidoc 0.29.0, project version 0.3.0, generated 2022-11-02. HTTP only.
+- [Airmee](https://airmee.com/) · [For retailers](https://airmee.com/en/for-retailers/) · [Support (consumer)](https://airmee.com/en/support/) · [Contact](https://airmee.com/en/contact/)
+- [Privacy Policy](https://airmee.com/en/privacy-policy/) · [Cookie Policy](https://airmee.com/en/cookie-policy/) · [News](https://airmee.com/en/news/) · [Careers](https://careers.airmee.com/)
+
+## API Evangelist profile
+
+- [apis.yml](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/apis.yml)
+- [Conventions, idempotency and reversibility](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/conventions/airmee-conventions.yml)
+- [Error catalog](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/errors/airmee-problem-types.yml)
+- [Data model](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/data-model/airmee-data-model.yml)
+- [Lifecycle](https://raw.githubusercontent.com/api-evangelist/airmee/refs/heads/main/lifecycle/airmee-lifecycle.yml)

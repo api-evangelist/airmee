@@ -1,0 +1,105 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airmee-integration-api-openapi.yml (converted from the provider-published apidoc api_data.json)
+note: >-
+  Entity graph derived from the request and response shapes of the 12 published operations. The
+  contract uses no $ref and defines no named component schemas — every object is inlined per
+  operation — so these entities are named from the field paths they occupy and the relationships are
+  read from the id-reference fields that link them. Only `place` and `order` are addressable by id;
+  everything else is a value object carried inside a request or a response.
+entities:
+- name: place
+  description: A pickup place (a retailer's store, warehouse or fulfilment site) that Airmee collects from. The unit of both authentication and configuration.
+  id_field: place_id
+  id_type: uuid
+  addressable: true
+  appears_in: [requestDelivery, requestReturn, cancelDelivery, deliveryIntervals, deliveryIntervalsForCheckout, dimensionsAndWeight, serviceAreaAvailability, getCollectionPointsForZipCode, getParcelLockersForZipCode, returnIntervals]
+  note: >-
+    Carried on 10 of the 12 operations, and the JWT is scoped to it ("Pickup place's long lived
+    JWT"), so place is the tenant boundary. There is no operation to list, create or read a place —
+    it is provisioned out of band.
+- name: order
+  description: A booked delivery or return.
+  id_field: order_id
+  id_type: uuid
+  addressable: partial
+  created_by: [requestDelivery, requestReturn]
+  deleted_by: [cancelDelivery]
+  read_by: []
+  fields: [order_id, tracking_url, message]
+  note: >-
+    Created and cancelled through the API but never READ through it. The only handle a caller keeps
+    is order_id plus a human tracking_url; there is no GET /orders/{id}, no status field and no
+    order-state enumeration anywhere in the contract.
+- name: recipient
+  description: The consumer receiving a delivery (named `customer` on the returns operation).
+  id_field: null
+  fields: [name, phone_number, phone_number_country_code, email]
+  addressable: false
+  note: Identical shape under two names — `recipient` on request_delivery, `customer` on request_return.
+- name: address
+  description: A dropoff or pickup street address, optionally pre-geocoded by the caller.
+  id_field: null
+  fields: [street_and_number, city, zip_code, country, apartment, floor, door_code, latitude, longitude]
+  addressable: false
+  note: Failure to geocode is its own status code (412 GeocodeError); supplying latitude/longitude is the documented escape hatch.
+- name: item
+  description: One physical parcel in a delivery or return.
+  id_field: parcel_id
+  id_type: string
+  addressable: false
+  fields: [length, width, height, weight, volume, name, parcel_id, unit_price, quantity]
+  note: >-
+    One item object per parcel is mandatory ("the number of items reflects the number of parcels").
+    parcel_id maps to the Swedish TA-system kolli-ID and is required when the retailer prints labels
+    itself. Dimensions are bounded per place by the threshold_values entity.
+- name: interval
+  description: An allocated pickup or dropoff time window.
+  id_field: null
+  fields: [start, end, formatted_as_schedule, eta, eta_formatted, interval_category]
+  addressable: false
+  note: Epoch-second start/end plus a pre-rendered display string. The interval returned by an availability read is passed back verbatim into the booking.
+- name: schedule
+  description: A pickup_interval + dropoff_interval pair offered as a bookable option, optionally with extras (is_green).
+  id_field: null
+  returned_by: [deliveryIntervals, deliveryIntervalsForCheckout, returnIntervals]
+- name: collection_point
+  description: A staffed collection point a parcel can be delivered to.
+  id_field: id
+  id_type: string
+  addressable: true
+  fields: [id, name, address_details, operating_hours, distance, pickup_interval, dropoff_interval]
+  read_by: [getCollectionPointsForZipCode, collectionPointDetails]
+- name: parcel_locker
+  description: An unstaffed outdoor locker a parcel can be delivered to (24/7 access; iBoxen network).
+  id_field: id
+  id_type: string
+  addressable: true
+  fields: [id, name, address_details, operating_hours, distance, pickup_interval, dropoff_interval, extras]
+  read_by: [getParcelLockersForZipCode, parcelLockerDetails]
+- name: threshold_values
+  description: Maximum parcel height, length, width and weight accepted for a given place.
+  id_field: null
+  read_by: [dimensionsAndWeight]
+- name: checks
+  description: Doorstep verification requested on a delivery — minimum age, ID verification, signature capture.
+  id_field: null
+  fields: [min_age, verify_id, take_signature]
+  note: The only regulated-goods control in the contract; relevant to pharmacy and alcohol deliveries.
+relationships:
+- {from: order, to: place, type: belongs_to, via: place_id}
+- {from: order, to: recipient, type: has_one, via: recipient (embedded)}
+- {from: order, to: address, type: has_one, via: dropoff_address / pickup_address (embedded)}
+- {from: order, to: item, type: has_many, via: 'items[] (embedded)'}
+- {from: order, to: interval, type: has_many, via: pickup_interval + dropoff_interval (embedded)}
+- {from: order, to: checks, type: has_one, via: checks (embedded, optional)}
+- {from: item, to: place, type: constrained_by, via: threshold_values from dimensionsAndWeight(place_id)}
+- {from: schedule, to: place, type: scoped_to, via: place_id query parameter}
+- {from: collection_point, to: place, type: scoped_to, via: place_id query parameter}
+- {from: parcel_locker, to: place, type: scoped_to, via: place_id query parameter}
+- {from: order, to: collection_point, type: may_target, via: dropoff at a collection point (product variant of request_delivery)}
+- {from: order, to: parcel_locker, type: may_target, via: dropoff at a parcel locker (product variant of request_delivery)}
+id_prefixes: none published — place_id, order_id are bare UUIDs; parcel_id and ecomm_id are caller-supplied strings
+gaps:
+- No named component schemas in the source document, so identical structures (address, item, interval) are re-declared per operation and can drift.
+- order has no read operation and no status vocabulary, so an integration cannot reconcile state through the API.

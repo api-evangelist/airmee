@@ -1,0 +1,76 @@
+generated: '2026-09-19'
+method: searched
+source: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/ (api_project.json + api_data.json) + probes on airmee.com 2026-09-19
+versioning:
+  scheme: document-version-only
+  current: '0.3.0'
+  uri_versioned: false
+  version_header: null
+  docs: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  policy_url: null
+  note: >-
+    The only version marker Airmee publishes is apidoc's own project version, 0.3.0, carried on
+    every endpoint in api_data.json and rendered as a version selector on the docs page. The paths
+    themselves are unversioned (/integration/...), there is no version request header, and there is
+    no published policy about how long a contract version is served or how a change is announced.
+    The docs page's "Compare all with predecessor" control is apidoc boilerplate; only 0.3.0 is
+    listed, so no predecessor is actually published.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  in_spec: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no Sunset or Deprecation response headers (RFC 8594), and no operation is
+    marked deprecated in the source document. Nothing in the published surface tells an integrator
+    that anything is being retired — which, given the contract was last regenerated on 2026-11-02,
+    is the risk rather than the reassurance.
+staleness:
+  contract_generated: '2022-11-02T08:33:57Z'
+  contract_generator: apidoc 0.29.0
+  source: api_project.json generator.time
+  docs_copyright_footer: Copyright Airmee (2016-2022)
+  first_party_sdk_last_release: '2017-04-21'
+  note: >-
+    Three independent markers all stop in the same era: the contract was last generated in November
+    2022, the docs footer reads 2016-2022, and both first-party Packagist releases are frozen at
+    1.0.0 from April 2017. The API itself is live — both hosts answer 401 on documented routes as of
+    2026-09-19 — but nothing about its published surface has moved in roughly four years.
+status_page: null
+status_page_note: >-
+  No status page. status.airmee.com does not resolve (DNS NXDOMAIN, probed 2026-09-19),
+  https://airmee.com/status and /en/status return the S3 403 that stands for "no such key", and no
+  status or uptime link appears on the site or in the API docs.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA or uptime commitment is published. The marketing site advertises operational figures
+    (98% delivery precision, 4.8/5 customer rating, 99%+ fossil-free) — delivery-performance claims
+    for retail buyers, not an availability commitment for the API.
+changelog:
+  url: null
+  note: >-
+    No changelog, release notes or "what's new" page anywhere. Probed 2026-09-19:
+    https://airmee.com/en/changelog -> 403 (this host's 404). The only dated artefact is the apidoc
+    generator timestamp inside api_project.json.
+support:
+  url: https://airmee.com/en/support/
+  audience: consumers (recipients of a delivery)
+  developer_channel: null
+  contact_email: help@airmee.com
+  note: >-
+    The support page answers consumer delivery questions only — "where is my package", locker
+    access, returns. There is no developer support channel, no forum and no ticketing surface; an
+    integrator's path is the "Contact sales" form.
+evidence:
+- {url: 'http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_project.json', status: 200}
+- {url: 'https://airmee.com/en/changelog', status: 403}
+- {url: 'https://airmee.com/en/status', status: 403}
+- {url: 'https://status.airmee.com/', status: 0, note: 'DNS does not resolve'}
+- {url: 'https://airmee.com/en/support/', status: 200}
+gaps:
+- No status page and no SLA, so an integrator has no way to observe or claim availability.
+- No changelog and no version policy, so a contract change would arrive unannounced.
+- Published contract and first-party SDKs are years behind the live service.

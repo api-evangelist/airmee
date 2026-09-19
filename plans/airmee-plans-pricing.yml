@@ -1,0 +1,21 @@
+generated: '2026-09-19'
+method: searched
+source: https://airmee.com/en/for-retailers/ + https://airmee.com/en/ + the Integration API documentation
+plan_count: 0
+plans: []
+pricing_url: null
+access_model: sales-gated
+note: >-
+  Airmee publishes no pricing of any kind. There is no /pricing page (probed 2026-09-19:
+  https://airmee.com/pricing and /en/pricing both return the S3 403 this host serves for a missing
+  key), no tier or plan named anywhere on the marketing site, and no billing, quota or cost section
+  in the API documentation. Every conversion path on the retailer side ends at "Contact sales", and
+  API credentials are a place-scoped JWT handed out during that onboarding rather than self-serve
+  keys, so there is no free tier, no trial and no published unit rate. Airmee sells a delivery
+  service to retailers under negotiated carrier contracts; the API is the integration surface for
+  that contract, not a separately priced product.
+evidence:
+- {url: 'https://airmee.com/pricing', status: 403}
+- {url: 'https://airmee.com/en/pricing', status: 403}
+- {url: 'https://airmee.com/en/for-retailers/', status: 200}
+- {url: 'http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/', status: 200}

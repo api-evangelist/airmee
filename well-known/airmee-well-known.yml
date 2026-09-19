@@ -1,0 +1,230 @@
+generated: '2026-09-19'
+method: probed
+source: live GET of the named /.well-known/ path list on every host this record knows, with a per-host negative
+  control
+note: 'Seven hosts probed: the registrable domain and www (S3/CloudFront static site), both API Gateway hosts (api.
+  and staging-api.), the apidoc documentation site on its S3 website endpoint, the consumer tracking host, and the
+  Teamtailor-hosted careers site. Every host answers its negative-control path with the same status it answers the
+  real probes (403 on the S3 and API Gateway hosts, 404 on tracking and careers), so no host is a soft-200 catch-all
+  and every non-200 below is a genuine miss. Exactly one document exists: careers.airmee.com serves an RFC 9727
+  api-catalog linkset (application/linkset+json, 279 bytes, saved verbatim as airmee-api-catalog.json). It is PLATFORM-AUTHORED
+  — Teamtailor emits it for every careers site it hosts, and it describes the jobs feed (jobs.json / jobs.md) with
+  service-doc at docs.teamtailor.com — so it says nothing about the Airmee Integration API; it is recorded because
+  it is served under a hostname Airmee controls, and flagged so it is not read as Airmee''s own API catalog. No
+  security.txt, no OAuth/OIDC discovery, no ai-plugin.json, no apis.json and no A2A agent card anywhere.'
+hosts:
+- host: https://airmee.com
+  path_echo_control: passed
+  hit_count: 0
+  note: Static site on Amazon S3 behind CloudFront; S3 answers 403 AccessDenied (HTML) for every missing key, including
+    the negative control, so 403 is this host's 404.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/apis.json
+    status: 403
+  - path: /apis.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 403
+    bytes: 303
+- host: https://www.airmee.com
+  path_echo_control: passed
+  hit_count: 0
+  note: Same S3/CloudFront origin as the apex; 403 AccessDenied on every missing key.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/apis.json
+    status: 403
+  - path: /apis.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 403
+    bytes: 303
+- host: https://api.airmee.com
+  path_echo_control: passed
+  hit_count: 0
+  note: AWS API Gateway production host; {"message":"Forbidden"} JSON on every unmatched route, including the negative
+    control.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/apis.json
+    status: 403
+  - path: /apis.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 403
+    bytes: 23
+- host: https://staging-api.airmee.com
+  path_echo_control: passed
+  hit_count: 0
+  note: AWS API Gateway staging host; same catch-all 403 as production.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/apis.json
+    status: 403
+  - path: /apis.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 403
+    bytes: 23
+- host: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com
+  path_echo_control: passed
+  hit_count: 0
+  note: The apidoc documentation site (S3 website endpoint, HTTP only); 403 AccessDenied for every missing key.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/apis.json
+    status: 403
+  - path: /apis.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 403
+    bytes: 323
+- host: https://tracking.airmee.com
+  path_echo_control: passed
+  hit_count: 0
+  note: Consumer tracking page on S3; honest 404 NoSuchKey on every probe and on the negative control.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 404
+    bytes: 404
+- host: https://careers.airmee.com
+  path_echo_control: passed
+  hit_count: 1
+  note: Teamtailor-hosted careers site under an Airmee hostname; 404 (full HTML page) on every probe and on the
+    negative control, except the one genuine document below.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 200
+    file: airmee-api-catalog.json
+    content_type: application/linkset+json; charset=utf-8
+    bytes: 279
+    counted: true
+    platform_authored: true
+    platform: Teamtailor
+    note: RFC 9727 linkset naming the careers jobs feed (jobs.json, jobs.md) with service-doc https://docs.teamtailor.com/
+      — a Teamtailor platform document served under an Airmee hostname, not a catalog of the Airmee Integration
+      API.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  negative_control:
+    path: /.well-known/airmee-negative-control-9c1e4b7a.json
+    status: 404
+    bytes: 30251

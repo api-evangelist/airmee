@@ -1,0 +1,24 @@
+generated: '2026-09-19'
+method: generated
+source: openapi/airmee-integration-api-openapi.yml + http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+note: >-
+  Two packaged Agent Skills covering the marquee flows of the Airmee Integration API. Every step is
+  grounded in a real operationId from the converted contract; the auth, idempotency, reversibility
+  and error rules are the ones recorded in conventions/ and errors/. Airmee publishes no skills or
+  AGENTS.md of its own (searched 2026-09-19).
+skills:
+- name: Book an Airmee home delivery
+  file: skills/airmee-book-a-home-delivery.md
+  api: openapi/airmee-integration-api-openapi.yml
+  operations: [serviceAreaAvailability, deliveryIntervalsForCheckout, deliveryIntervals, dimensionsAndWeight, requestDelivery, cancelDelivery]
+- name: Offer Airmee locker or collection-point delivery
+  file: skills/airmee-offer-locker-and-collection-point-delivery.md
+  api: openapi/airmee-integration-api-openapi.yml
+  operations: [getParcelLockersForZipCode, parcelLockerDetails, getCollectionPointsForZipCode, collectionPointDetails, dimensionsAndWeight, requestDelivery]
+not_covered:
+- flow: returns
+  reason: >-
+    requestReturn and returnIntervals are real operations and a return could be scripted, but the
+    flow has no reversal path at all (no cancel for a return) and no way to read the booking back,
+    so a packaged skill would be teaching an agent to take an irreversible action it cannot verify.
+    Recorded as a deliberate omission rather than an oversight.

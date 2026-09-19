@@ -1,0 +1,160 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airmee-integration-api-openapi.yml (converted from the provider-published apidoc api_data.json) + live probes on api.airmee.com 2026-09-19
+derived_from: openapi/airmee-integration-api-openapi.yml
+note: >-
+  Cross-cutting request/response semantics for the Airmee Integration API 0.3.0. Everything below is
+  read out of the provider's own apidoc document or observed on a live unauthenticated request;
+  nothing is inferred from a similar carrier API. Several fields record an ABSENCE — that absence is
+  the finding, because this is a booking API with three write operations and no replay protection.
+authentication:
+  style: api-key
+  header: Authorization
+  prefix: none (raw JWT value; the published curl examples show `Authorization:<YOUR_JWT>` with no Bearer scheme)
+  token_type: long-lived JWT issued per pickup place
+  transport: https-only
+  self_serve: false
+  token_endpoint: null
+  rotation_policy: not published
+  see: authentication/airmee-authentication.yml
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  key_header: null
+  scope: []
+  uncovered_writes:
+  - requestDelivery
+  - requestReturn
+  - cancelDelivery
+  coverage_math:
+    write_operations: 3
+    covered: 0
+    uncovered: 3
+  coverage_reason: >-
+    none. The contract documents no Idempotency-Key header, no client-supplied request id and no
+    replay semantics on any of the three write operations. `ecomm_id` (the retailer's own order /
+    shipment id) is carried on both booking operations and is described as "the unique identifier
+    associated to the current order in the ecommerce system", but the docs never state that Airmee
+    de-duplicates on it, and there is no documented response that says "this booking already
+    exists". A client that retries a timed-out POST /request_delivery has no published guarantee
+    against creating a second physical delivery.
+  client_correlation_field: ecomm_id
+  client_correlation_note: >-
+    Present on requestDelivery and requestReturn, plus items[].parcel_id per parcel. Useful for
+    reconciliation after the fact; NOT a documented idempotency key.
+reversibility:
+  applicable: true
+  grade: documented
+  grade_reason: >-
+    A real reversal operation exists and is named, but no window is stated in any published
+    document, so this grades `documented` and not `verified`. The docs say only that cancellation
+    applies to "a delivery that was not already picked up" — a state condition, not a time window —
+    and nothing tells a caller how to observe that state through the API, because there is no
+    order-status read operation in the published contract.
+  write_surface:
+  - operation: requestDelivery
+    path: POST /request_delivery
+    creates: a home, collection-point or parcel-locker delivery booking
+    reversal_operation: cancelDelivery
+    reversal_path: POST /cancel_delivery
+    window: null
+    window_condition: 'Published condition, verbatim: "cancel a delivery that was not already picked up." No duration, cutoff time or deadline is stated.'
+    window_source: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/ (Home_deliveries / cancel_delivery)
+    on_failure: 404 NotFoundError "No order associated with the given place_id and order_id pair."
+    note: >-
+      cancel_delivery is documented under Home deliveries only, but it takes just place_id and
+      order_id, and collection-point and locker bookings return the same order.order_id shape.
+      Whether it cancels those is NOT stated; treat cross-product cancellation as unverified.
+  - operation: requestReturn
+    path: POST /request_return
+    creates: a label-less return pickup booking
+    reversal_operation: null
+    reversal_path: null
+    window: null
+    note: >-
+      No cancel, void or undo operation is published for returns. A return booked in error cannot be
+      withdrawn through the API.
+  no_reversal_for:
+  - requestReturn
+  read_back:
+    supported: false
+    note: >-
+      There is no GET for an order. requestDelivery returns order.order_id and order.tracking_url
+      and that is the last the API says about it; the tracking URL is a consumer web page
+      (tracking.airmee.com), not a documented machine-readable status read. An agent cannot confirm
+      the outcome of its own write.
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview or validate-only flag. The closest published rehearsal is the read side:
+    serviceAreaAvailability, deliveryIntervals / deliveryIntervalsForCheckout and
+    dimensionsAndWeight let a caller check that an address is serviceable, that a delivery window is
+    still available and that the parcel is within threshold BEFORE booking — the documented pattern
+    is to call those first and pass the returned pickup_interval / dropoff_interval straight into
+    request_delivery.
+pagination:
+  style: none
+  params: []
+  note: >-
+    No cursor, page or offset parameter anywhere. The two list-shaped reads bound results with
+    `limit` ("the number of closest collection points / parcel lockers to retrieve", optional) and
+    are otherwise unpaged; the interval reads return the whole list of available schedules.
+filtering:
+  collection_points: [zip_code, country, place_id, limit]
+  parcel_lockers: [zip_code, country, place_id, limit]
+  intervals: [zip_code, country, place_id, date]
+  service_area: [place_id, zip_code, country, street_and_number, city]
+field_expansion:
+  supported: false
+metadata:
+  supported: partial
+  fields: ['ecomm_id', 'items[].parcel_id', 'items[].name', 'message_to_courier']
+  note: >-
+    ecomm_id and parcel_id are the retailer's own identifiers (the docs map them to the Swedish TA
+    system sändnings-ID and kolli-ID). message_to_courier is free text delivered to the courier, not
+    a structured metadata object.
+request_tracing:
+  request_id_header: null
+  response_header_observed: x-amzn-requestid
+  note: >-
+    Airmee documents no request-id. The AWS API Gateway edge returns x-amzn-requestid (and
+    x-amzn-errortype on failures) on every response, observed live 2026-09-19; that is the only
+    correlation identifier a caller can quote to support, and it is a platform artifact rather than
+    a documented contract feature.
+versioning:
+  scheme: document-version-only
+  current: '0.3.0'
+  uri_versioned: false
+  note: >-
+    The path prefix is /integration with no version segment, and no version header is documented.
+    The only version marker is apidoc's own project version (0.3.0) rendered on the docs page and
+    carried per-endpoint in api_data.json. A consumer has no way to pin a contract version or to
+    detect that one changed.
+  see: lifecycle/airmee-lifecycle.yml
+environments:
+  selection: separate host — staging-api.airmee.com vs api.airmee.com
+  rule: 'Verbatim from api_project.json: "For respective production url omit ''staging-'' prefix"'
+  see: sandbox/airmee-sandbox.yml
+data_conventions:
+  time_format: Unix epoch seconds (integers) on every pickup_interval / dropoff_interval start and end
+  human_time_field: formatted_as_schedule (a pre-rendered display string returned alongside each interval)
+  timezone: Europe/Stockholm (stated explicitly for the checkout `date` offset parameter)
+  currency: minor-unit integer amount plus ISO currency string on items[].unit_price
+  phone_numbers: split into phone_number (national, integer) and phone_number_country_code (integer)
+  dimensions: length / width / height / weight / volume as doubles, bounded per place by dimensionsAndWeight
+  country: ISO country name and country_code both appear; requests take `country` (example "SE")
+error_envelope:
+  format: none (not RFC 9457)
+  media_type: application/json
+  fields: [message, extraMessage]
+  see: errors/airmee-problem-types.yml
+rate_limit_signaling:
+  documented: false
+  headers_observed: []
+  see: rate-limits/airmee-rate-limits.yml
+webhooks:
+  supported: false
+  note: >-
+    No webhook, callback or event surface is documented. Delivery status reaches the consumer by SMS
+    and the Airmee app, and the retailer by the tracking URL — not by a machine-readable push.

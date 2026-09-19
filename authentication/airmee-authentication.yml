@@ -1,0 +1,18 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airmee-integration-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: jwtAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Pickup place's long-lived JWT issued by Airmee, sent as the raw value of the
+    Authorization header (the published curl examples use `Authorization:<YOUR_JWT>` with no
+    scheme prefix).
+  sources:
+  - openapi/airmee-integration-api-openapi.yml

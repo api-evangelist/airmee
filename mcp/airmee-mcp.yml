@@ -1,0 +1,106 @@
+generated: '2026-09-19'
+method: derived
+status: candidate
+source: openapi/airmee-integration-api-openapi.yml
+note: Airmee ships NO MCP server. This is a candidate tool list derived one-to-one from the 12 operations in the
+  Airmee Integration API contract (itself converted from the provider-published apidoc api_data.json), so an agent
+  builder can see what an Airmee MCP server would expose. It is not a server, it is not hosted anywhere, and no
+  endpoint URL is asserted.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  auth_note: If a server existed it would carry the place-scoped JWT the REST API takes as the raw Authorization
+    header value.
+  verified: derived
+  probe_evidence:
+  - url: https://mcp.airmee.com/
+    method: POST tools/list
+    status: 0
+    result: DNS does not resolve.
+  - url: https://api.airmee.com/mcp
+    method: POST tools/list
+    status: 403
+    result: AWS API Gateway {"message":"Forbidden"} — the response served for every unmatched route on this host
+      (same as the negative control), not an MCP server behind auth.
+  - url: https://api.airmee.com/integration/mcp
+    method: POST tools/list
+    status: 403
+    result: Same API Gateway catch-all 403.
+server: null
+tool_count: 12
+tools:
+- name: collection_point_details
+  description: Collection point details
+  method: GET
+  path: /get_collection_point_details
+  source_operation: openapi/airmee-integration-api-openapi.yml#collectionPointDetails
+  read_only: true
+- name: get_collection_points_for_zip_code
+  description: Collection point delivery intervals
+  method: GET
+  path: /get_collection_points_for_zip_code
+  source_operation: openapi/airmee-integration-api-openapi.yml#getCollectionPointsForZipCode
+  read_only: true
+- name: request_delivery
+  description: Request new delivery (home, collection point or parcel locker)
+  method: POST
+  path: /request_delivery
+  source_operation: openapi/airmee-integration-api-openapi.yml#requestDelivery
+  read_only: false
+- name: cancel_delivery
+  description: Cancel a delivery
+  method: POST
+  path: /cancel_delivery
+  source_operation: openapi/airmee-integration-api-openapi.yml#cancelDelivery
+  read_only: false
+- name: delivery_intervals
+  description: Delivery intervals for TA
+  method: GET
+  path: /delivery_intervals_for_zip_code
+  source_operation: openapi/airmee-integration-api-openapi.yml#deliveryIntervals
+  read_only: true
+- name: delivery_intervals_for_checkout
+  description: Delivery intervals for checkout
+  method: GET
+  path: /checkout_delivery_intervals_for_zip_code
+  source_operation: openapi/airmee-integration-api-openapi.yml#deliveryIntervalsForCheckout
+  read_only: true
+- name: dimensions_and_weight
+  description: Dimensions and weight thresholds
+  method: GET
+  path: /product_threshold_for_place
+  source_operation: openapi/airmee-integration-api-openapi.yml#dimensionsAndWeight
+  read_only: true
+- name: service_area_availability
+  description: Service area availabilty
+  method: GET
+  path: /service_area_availability_for_zip_code
+  source_operation: openapi/airmee-integration-api-openapi.yml#serviceAreaAvailability
+  read_only: true
+- name: get_parcel_lockers_for_zip_code
+  description: Parcel locker delivery intervals
+  method: GET
+  path: /get_parcel_lockers_for_zip_code
+  source_operation: openapi/airmee-integration-api-openapi.yml#getParcelLockersForZipCode
+  read_only: true
+- name: parcel_locker_details
+  description: Parcel locker details
+  method: GET
+  path: /get_parcel_locker_details
+  source_operation: openapi/airmee-integration-api-openapi.yml#parcelLockerDetails
+  read_only: true
+- name: request_return
+  description: Request new return
+  method: POST
+  path: /request_return
+  source_operation: openapi/airmee-integration-api-openapi.yml#requestReturn
+  read_only: false
+- name: return_intervals
+  description: Return intervals
+  method: GET
+  path: /delivery_intervals_for_zip_code_returns
+  source_operation: openapi/airmee-integration-api-openapi.yml#returnIntervals
+  read_only: true

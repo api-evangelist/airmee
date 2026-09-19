@@ -1,0 +1,87 @@
+generated: '2026-09-19'
+method: searched
+source: https://packagist.org/packages/airmee/php-sdk + https://bitbucket.org/airmeedevs/ + public registry probes
+package_count: 3
+official_sdk_count: 2
+note: Airmee publishes two first-party packages, both on Packagist and both sourced from the bitbucket.org/airmeedevs
+  workspace, and both frozen at 1.0.0 since April 2017 — five and a half years before the apidoc contract they wrap
+  was last regenerated (api_data.json generator time 2022-11-02), which is a strong abandonment signal. The php-sdk
+  README itself says "Everything in this file is subject to change as we evolve the SDK" and reads as a design sketch
+  (proposed classes, open questions) rather than a finished client; it is the artifact that points at the integration
+  docs URL, which is how ownership of the S3 docs bucket was confirmed. A third-party fork (pigmentab/airmee-php-sdk,
+  Pigment AB) carried the SDK forward to 1.2.1 in May 2022 and is recorded as unofficial. No npm, PyPI, RubyGems,
+  NuGet, crates.io or Go module exists; the ZentaSE/airmee.NET C# repository on GitHub (last push 2019-02-11) and
+  alvesvaren/homeassistant-airmee are community projects and are not recorded as packages.
+packages:
+- name: airmee/php-sdk
+  registry: packagist
+  language: php
+  official: true
+  url: https://packagist.org/packages/airmee/php-sdk
+  repository: https://bitbucket.org/airmeedevs/airmee-php-sdk
+  version: 1.0.0
+  published: '2017-04-21'
+  description: PHP SDK for the Airmee API
+  downloads_total: 950
+  note: 'Only tagged release; branches dev-master and dev-fix/checkout-endpoing-and-offset exist. Repository last
+    updated 2020-05-25. Ships Sphinx documentation that adds real first-party detail the apidoc site omits: a boolean
+    `sandbox` config flag (TRUE by default) that routes to staging-api.airmee.com, an `auth.jwt` credential parameter,
+    and endpoint overrides. Its own installation page says "The SDK should be installable via Composer, but this
+    has not been tested."'
+  docs: 'https://bitbucket.org/airmeedevs/airmee-php-sdk/src/master/documentation/ (Sphinx source: index, installation,
+    configuration, basic usage)'
+- name: airmee/magento-2-module
+  registry: packagist
+  language: php
+  official: true
+  url: https://packagist.org/packages/airmee/magento-2-module
+  repository: https://bitbucket.org/airmeedevs/airmee-magento-2-module
+  version: 1.0.0
+  published: '2017-04-21'
+  description: Airmee Magento 2 Shipping Module (type magento2-module, requires airmee/php-sdk 1.0.0 and magento/*
+    100.0.*)
+  downloads_total: 1
+  note: Pinned to Magento 2.0-era framework 100.0.* and PHP 5.5-7.0; license declared proprietary in composer.json.
+- name: pigmentab/airmee-php-sdk
+  registry: packagist
+  language: php
+  official: false
+  url: https://packagist.org/packages/pigmentab/airmee-php-sdk
+  repository: https://github.com/pigmentGit/airmee-php-sdk
+  version: 1.2.1
+  published: '2022-05-03'
+  description: PHP SDK for the Airmee API — third-party continuation of airmee/php-sdk by Pigment AB
+registries_checked:
+- registry: packagist
+  query: airmee
+  result: 3 matches (2 first-party
+  1 fork): null
+- registry: npm
+  query: airmee
+  result: no packages
+  version: null
+- registry: pypi
+  name: airmee
+  result: 404
+  version: null
+- registry: rubygems
+  name: airmee
+  result: 404
+  version: null
+- registry: nuget
+  names:
+  - airmee
+  - airmee.net
+  result: 404
+  version: null
+- registry: crates.io
+  name: airmee
+  result: 404
+  version: null
+- registry: proxy.golang.org
+  module: bitbucket.org/airmeedevs
+  result: 404
+  version: null
+- registry: github
+  query: org airmee
+  result: 404 — Airmee has no GitHub organisation; first-party code lives on Bitbucket (airmeedevs)

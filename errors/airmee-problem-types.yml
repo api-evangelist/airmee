@@ -1,0 +1,122 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airmee-integration-api-openapi.yml (converted from the provider-published apidoc api_data.json)
+  + live unauthenticated probes on api.airmee.com 2026-09-19
+format: none
+format_note: 'Airmee does not use RFC 9457 application/problem+json. Every documented failure body is a plain application/json
+  object with `message` and `extraMessage` (the apidoc error examples), and the AWS API Gateway edge answers unmatched
+  or unauthenticated requests with a one-field {"message": ...} body (observed live: 401 {"message":"Unauthorized"}
+  on a documented route without a JWT; 403 {"message":"Forbidden"} on any unmatched route; 403 {"message":"Missing
+  Authentication Token"} on GET of a POST-only route). Errors are named in the docs by class (ValidationError, NotFoundError,
+  GeocodeError, DatabaseConnectionError) rather than by a machine-readable code field, so an agent must branch on
+  HTTP status and message text.'
+envelope:
+  documented:
+    media_type: application/json
+    schema: '#/components/schemas/Error'
+    fields:
+    - message
+    - extraMessage
+  observed_edge:
+    media_type: application/json
+    fields:
+    - message
+    evidence: GET https://api.airmee.com/integration/product_threshold_for_place?place_id=test -> 401 {"message":"Unauthorized"};
+      GET https://api.airmee.com/integration/request_delivery -> 403 {"message":"Missing Authentication Token"}
+      (x-amzn-errortype MissingAuthenticationTokenException); GET https://api.airmee.com/nope -> 403 {"message":"Forbidden"}
+    note: x-amzn-requestid and x-amzn-errortype response headers are the only correlation identifiers a caller receives,
+      and only on errors.
+problem_count: 5
+problems:
+- status: 400
+  name: ValidationError
+  title: The request does not contain all the needed parameters
+  example:
+    message: Invalid inputs supplied
+    extraMessage: <Required Param> is required
+  source_operations:
+  - openapi/airmee-integration-api-openapi.yml#collectionPointDetails
+  - openapi/airmee-integration-api-openapi.yml#getCollectionPointsForZipCode
+  - openapi/airmee-integration-api-openapi.yml#requestDelivery
+  - openapi/airmee-integration-api-openapi.yml#cancelDelivery
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervals
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervalsForCheckout
+  - openapi/airmee-integration-api-openapi.yml#dimensionsAndWeight
+  - openapi/airmee-integration-api-openapi.yml#serviceAreaAvailability
+  - openapi/airmee-integration-api-openapi.yml#getParcelLockersForZipCode
+  - openapi/airmee-integration-api-openapi.yml#parcelLockerDetails
+  - openapi/airmee-integration-api-openapi.yml#requestReturn
+  - openapi/airmee-integration-api-openapi.yml#returnIntervals
+  remediation: Compare the request against the required fields for the operation; the extraMessage names the missing
+    parameter ("<Required Param> is required"). Do not retry unchanged.
+  retryable: false
+- status: 401
+  name: Unauthorized
+  title: Unauthorized — the Authorization header is missing or the JWT is not accepted
+  example:
+    message: Unauthorized
+  source_operations:
+  - openapi/airmee-integration-api-openapi.yml#collectionPointDetails
+  - openapi/airmee-integration-api-openapi.yml#getCollectionPointsForZipCode
+  - openapi/airmee-integration-api-openapi.yml#requestDelivery
+  - openapi/airmee-integration-api-openapi.yml#cancelDelivery
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervals
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervalsForCheckout
+  - openapi/airmee-integration-api-openapi.yml#dimensionsAndWeight
+  - openapi/airmee-integration-api-openapi.yml#serviceAreaAvailability
+  - openapi/airmee-integration-api-openapi.yml#getParcelLockersForZipCode
+  - openapi/airmee-integration-api-openapi.yml#parcelLockerDetails
+  - openapi/airmee-integration-api-openapi.yml#requestReturn
+  - openapi/airmee-integration-api-openapi.yml#returnIntervals
+  remediation: The Authorization header is missing or the JWT is not accepted. Obtain the place-scoped JWT from
+    Airmee onboarding; there is no token endpoint to call.
+  retryable: false
+  observed: live on https://api.airmee.com/integration/product_threshold_for_place?place_id=test, 2026-09-19
+  documented_in_spec: false
+- status: 404
+  name: NotFoundError
+  title: The store id does not exist
+  example:
+    message: Store does not exist.
+    extraMessage: The store id does not exist
+  source_operations:
+  - openapi/airmee-integration-api-openapi.yml#requestDelivery
+  - openapi/airmee-integration-api-openapi.yml#cancelDelivery
+  - openapi/airmee-integration-api-openapi.yml#requestReturn
+  remediation: The place_id / order_id pair (or the place) does not exist for this JWT. Check the ids; on cancel_delivery
+    it also means the order is not cancellable under this place. Do not retry unchanged.
+  retryable: false
+- status: 412
+  name: GeocodeError
+  title: Failed to geocode the address
+  example:
+    message: Geocoding error
+    extraMessage: 'Address could not be found: <address>'
+  source_operations:
+  - openapi/airmee-integration-api-openapi.yml#requestDelivery
+  - openapi/airmee-integration-api-openapi.yml#serviceAreaAvailability
+  - openapi/airmee-integration-api-openapi.yml#requestReturn
+  remediation: The address could not be geocoded. Correct street_and_number / city / zip_code / country, or supply
+    latitude and longitude on the address object and resubmit.
+  retryable: false
+- status: 500
+  name: DatabaseConnectionError
+  title: Fail to retrieve the collection point data
+  example:
+    message: Database connection error
+    extraMessage: Fail to retrieve the collection point data
+  source_operations:
+  - openapi/airmee-integration-api-openapi.yml#collectionPointDetails
+  - openapi/airmee-integration-api-openapi.yml#getCollectionPointsForZipCode
+  - openapi/airmee-integration-api-openapi.yml#requestDelivery
+  - openapi/airmee-integration-api-openapi.yml#cancelDelivery
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervals
+  - openapi/airmee-integration-api-openapi.yml#deliveryIntervalsForCheckout
+  - openapi/airmee-integration-api-openapi.yml#dimensionsAndWeight
+  - openapi/airmee-integration-api-openapi.yml#serviceAreaAvailability
+  - openapi/airmee-integration-api-openapi.yml#getParcelLockersForZipCode
+  - openapi/airmee-integration-api-openapi.yml#parcelLockerDetails
+  - openapi/airmee-integration-api-openapi.yml#requestReturn
+  - openapi/airmee-integration-api-openapi.yml#returnIntervals
+  remediation: Server-side failure. Retry with backoff; if it persists contact Airmee support.
+  retryable: true

@@ -1,0 +1,43 @@
+generated: '2026-09-19'
+method: searched
+source: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/ + live response headers from api.airmee.com 2026-09-19
+limit_count: 0
+rate_limits: []
+headers: []
+status_on_exhaustion: null
+retry_after: false
+note: >-
+  Airmee documents no request rate limit. The full apidoc document (api_data.json, 159KB, 15
+  entries) contains zero occurrences of "rate limit", "429", "X-RateLimit", "RateLimit-" or
+  "Retry-After", and no operation declares a 429 response. Live responses from api.airmee.com carry
+  no rate-limit headers either (observed 2026-09-19 on 401 and 403 responses; the only non-standard
+  headers are AWS API Gateway's x-amzn-requestid and x-amzn-errortype). The host is AWS API Gateway,
+  which is throttled by default at the account/stage level, so a limit almost certainly exists — it
+  is simply not published and not signalled, leaving an agent with no way to back off before it is
+  cut off.
+payload_limits:
+- scope: per delivery request
+  limit: null
+  unit: parcels
+  detail: >-
+    items[] must contain one object per physical parcel ("It's required that the number of items
+    reflects the number of parcels to be delivered"). No maximum count is stated.
+  source: POST /request_delivery, POST /request_return parameter descriptions
+- scope: per parcel
+  limit: per-place, returned by the API
+  unit: mm / kg (units not stated)
+  detail: >-
+    Maximum allowed height, length, width and weight are not fixed constants — they are configured
+    per pickup place and read at runtime from GET /product_threshold_for_place. The contract does
+    not state the units.
+  source: openapi/airmee-integration-api-openapi.yml#dimensionsAndWeight
+- scope: per collection-point / parcel-locker lookup
+  limit: caller-specified
+  unit: results
+  detail: Optional `limit` parameter caps how many nearest collection points or lockers are returned; no maximum is documented.
+payload_limits_note: >-
+  These are shape constraints on a single request, not a rate. Recorded separately so they are not
+  mistaken for the runtime backoff signal an agent needs.
+evidence:
+- {url: 'http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_data.json', status: 200}
+- {url: 'https://api.airmee.com/integration/product_threshold_for_place?place_id=test', status: 401, note: 'no RateLimit-* or Retry-After header present'}

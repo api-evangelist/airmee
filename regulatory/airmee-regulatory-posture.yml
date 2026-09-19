@@ -1,0 +1,84 @@
+generated: '2026-09-19'
+method: probed
+source: conventional-path probes on airmee.com plus the artifacts harvested this pass (well-known/, security/, lifecycle/) and the published privacy policy
+name: Airmee Regulatory Posture
+description: >-
+  Harvest-only record of horizontal regulatory signals. Almost nothing is published. airmee.com is a
+  static site on S3/CloudFront that answers 403 AccessDenied for every path it does not serve, and
+  the only legal documents that exist are the privacy policy and cookie policy linked from the
+  footer — there is no /security, /trust, /accessibility, /legal/subprocessors, /legal/dpa,
+  /transparency or SBOM page, and no trust centre or named certification anywhere on the site or in
+  the API documentation. Two signals cross the substance bar and are recorded; a third (a named
+  third-party list) does not and is deliberately left out. The controller is Airmiz AB, Västmannagatan 4,
+  111 24 Stockholm, with a Danish entity Airmiz Denmark ApS (CVR 42786780).
+signals:
+  data_subject_request:
+    present: true
+    pointer_type: DataSubjectRequest
+    url: https://airmee.com/en/privacy-policy/
+    http_status: 200
+    channel: email
+    contact: help@airmee.com
+    rights_named:
+    - access
+    - correction
+    - non-discrimination
+    - complaint to a supervisory authority
+    - marketing opt-out / unsubscribe
+    stated_sla: null
+    note: >-
+      The privacy policy names a GDPR data-subject request route in substance — it names the
+      controller entity (Airmiz AB), states the rights, and gives a single contact address to
+      exercise them. There is no self-serve request form, no portal, and no response-time
+      commitment. Effective and last-updated dates are both 02 June 2022.
+  incident_notification:
+    present: true
+    pointer_type: IncidentNotification
+    url: https://airmee.com/en/privacy-policy/
+    http_status: 200
+    stated_period: 'Verbatim: "Notification of data breaches: We will comply with laws applicable to us in respect of any data breach."'
+    note: >-
+      A commitment exists but is expressed only as "we will comply with applicable law" — no
+      notification window, no notification channel and no per-customer contract term is published.
+      Recorded because it is a stated commitment on a first-party page, with the verbatim wording so
+      the thinness of it is visible.
+signals_considered_and_rejected:
+- signal: subprocessors
+  why: >-
+    The privacy policy contains the sentence "Third parties we currently use include: Google
+    Analytics, Hotjar". That is two analytics vendors named in prose, not a dated subprocessor
+    table with categories, locations and a change-notification commitment. It does not meet the
+    substance bar, so no Subprocessors pointer is emitted.
+- signal: data_residency
+  why: >-
+    The policy discusses international transfer in generic GDPR language and names no region,
+    data-centre location or residency option. The Integration API documentation says nothing about
+    where data is stored. (The API is served from AWS eu-west-1 by inference from the docs bucket's
+    S3 website endpoint — inference, not a published commitment, so it is not recorded as a signal.)
+- signal: age_assurance
+  why: >-
+    The privacy policy states products are not aimed at children under 13 and consent is sought from
+    a guardian under 16 — a standard COPPA/GDPR minimum-age clause, not an age-assurance mechanism.
+    Note separately that the Integration API DOES carry a delivery-side age check (checks.min_age,
+    checks.verify_id, checks.take_signature on request_delivery); that is a physical ID check by the
+    courier at the door, recorded in the contract, and is not a digital age-assurance programme.
+probes:
+- {url: 'https://airmee.com/accessibility', status: 403}
+- {url: 'https://airmee.com/accessibility/vpat', status: 403}
+- {url: 'https://airmee.com/legal/subprocessors', status: 403}
+- {url: 'https://airmee.com/legal/dpa', status: 403}
+- {url: 'https://airmee.com/privacy/requests', status: 403}
+- {url: 'https://airmee.com/transparency', status: 403}
+- {url: 'https://airmee.com/security/sbom', status: 403}
+- {url: 'https://airmee.com/en/security', status: 403}
+- {url: 'https://airmee.com/en/trust', status: 403}
+- {url: 'https://airmee.com/en/gdpr', status: 403}
+- {url: 'https://airmee.com/en/data-protection', status: 403}
+- {url: 'https://airmee.com/en/terms-of-service/', status: 403}
+- {url: 'https://airmee.com/en/privacy-policy/', status: 200}
+- {url: 'https://airmee.com/en/cookie-policy/', status: 200}
+- {url: 'https://airmee.com/.well-known/security.txt', status: 403}
+probe_note: >-
+  403 is this host's 404: the S3 origin answers 403 AccessDenied for every missing key, and the
+  negative control /.well-known/airmee-negative-control-9c1e4b7a.json returned the same 403, so
+  none of the 403s above is a bot block or an access wall — they are absences.

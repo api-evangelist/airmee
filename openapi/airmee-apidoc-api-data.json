@@ -1,0 +1,3775 @@
+[
+  {
+    "type": "",
+    "url": ".",
+    "title": "",
+    "group": "Airmee_Integration_Overview",
+    "name": "integration_overview",
+    "version": "0.3.0",
+    "description": "<img src=\"img/integration_overview.png\" height=\"700\" width=\"700\">",
+    "filename": "./functions/diagram/sequence_diagram.js",
+    "groupTitle": "Airmee_Integration_Overview"
+  },
+  {
+    "type": "get",
+    "url": "/get_collection_point_details/:collection_point_ids",
+    "title": "3. Collection point details",
+    "name": "collection_point_details",
+    "group": "Collection_point_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the details of collection point by passing collection point id(s). This method queries the server and returns a list of collection points with details like name, address, coordinates and operating hours.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_ids",
+            "description": "<p>The collection point id(s)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "collection_point_details",
+            "description": "<p>the preformatted details of collection point for the given collection point id or list of collection point ids as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.name",
+            "description": "<p>Name of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "collection_point_details.address_details",
+            "description": "<p>An object representing the address of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.address_details.street_and_number",
+            "description": "<p>Street name and street number of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.address_details.city",
+            "description": "<p>City of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.address_details.country",
+            "description": "<p>Country of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.address_details.zip_code",
+            "description": "<p>Zip code of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.address_details.country_code",
+            "description": "<p>ISO country code of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "collection_point_details.address_details.coordinates",
+            "description": "<p>An object representing coordinates of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "collection_point_details.address_details.coordinates.latitude",
+            "description": "<p>Latitude of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "collection_point_details.address_details.coordinates.longitude",
+            "description": "<p>Longitude of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "collection_point_details.operating_hours",
+            "description": "<p>An object representing the collection point operating hours</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "collection_point_details.operating_hours.day_of_week",
+            "description": "<p>Number representation for day of week</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.operating_hours.opening_time",
+            "description": "<p>Opening time for the collection_point in HH:MM format</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_details.operating_hours.closing_time",
+            "description": "<p>Closing time for the collection_point in HH:MM format</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"collection_point_details\":\n     [\n         {\n             \"id\" : \"collection_point_id_1\",\n             \"name\" : \"collection_point_name_1\",\n             \"operating_hours\":[\n                 {\"day_of_week\":0,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":1,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":2,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":3,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":4,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":5,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"},\n                 {\"day_of_week\":6,\"opening_time\":\"08:00\",\"closing_time\":\"22:00\"}\n             ],\n             \"address_details\":{\n                 \"street_and_number\":\"street_and_number 1\",\n                 \"city\":\"Stockholm\",\n                 \"zip_code\":\"11359\",\n                 \"country_code\":\"SE\",\n                 \"country\":\"Sweden\",\n                 \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n             }\n         },\n         {\n             \"id\" : \"collection_point_id_2\",\n             \"name\" : \"collection_point_name_2\",\n             \"operating_hours\":[\n                 {\"day_of_week\":0,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":1,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":2,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":3,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":4,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":5,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n                 {\"day_of_week\":6,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"}\n             ],\n             \"address_details\":{\n                 \"street_and_number\":\"street_and_number 2\",\n                 \"city\":\"Stockholm\",\n                 \"zip_code\":\"11359\",\n                 \"country_code\":\"SE\",\n                 \"country\":\"Sweden\",\n                 \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n             }\n         }\n      ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/get_collection_point_details?collection_point_ids=<COLLECTION_POINT_ID(s)>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to retrieve the collection point data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Fail to retrieve the collection point data\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/collection_points/get_collection_point_details.js",
+    "groupTitle": "Collection_point_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/get_collection_points_for_zip_code/:zip_code&:country&:place_id&:limit",
+    "title": "2. Collection point delivery intervals",
+    "name": "get_collection_points_for_zip_code",
+    "group": "Collection_point_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the details and availability of collection point based on zip code and country up to a given limit. This method queries the server and returns a list of available delivery times. This endpoint is mainly used by TA-systems to validate that the selected delivery time by the customer is still available prior to invoking a booking request.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code of the region that you want to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "defaultValue": "SE",
+            "description": "<p>The country code that zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "limit",
+            "defaultValue": "20",
+            "description": "<p>The number of closest collection points to retrieve</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_of_collection_points",
+            "description": "<p>the preformatted available list of collection point schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.name",
+            "description": "<p>Name of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_collection_points.address_details",
+            "description": "<p>An object representing the address of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.street_and_number",
+            "description": "<p>Street name and street number of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.city",
+            "description": "<p>City of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.country",
+            "description": "<p>Country of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.zip_code",
+            "description": "<p>Zip code of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.country_code",
+            "description": "<p>ISO country code of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.coordinates",
+            "description": "<p>An object representing coordinates of the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.coordinates.latitude",
+            "description": "<p>Latitude of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "list_of_collection_points.address_details.coordinates.longitude",
+            "description": "<p>Longitude of collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "list_of_collection_points.distance",
+            "description": "<p>Approx. distance from the collection point</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_collection_points.operating_hours",
+            "description": "<p>An object representing the collection point operating hours</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "list_of_collection_points.operating_hours.day_of_week",
+            "description": "<p>Number representation for day of week</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.operating_hours.opening_time",
+            "description": "<p>Opening time for the collection_point in HH:MM format</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.operating_hours.closing_time",
+            "description": "<p>Closing time for the collection_point in HH:MM format</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_collection_points.pickup_interval",
+            "description": "<p>An object representing the pickup interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_collection_points.pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_collection_points.pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.pickup_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be picked up from the specified place</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval",
+            "description": "<p>An object representing the dropoff interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be dropped off to the recipient</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval.eta",
+            "description": "<p>Unix timestamp for the ETA associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_collection_points.dropoff_interval.eta_formatted",
+            "description": "<p>the human readable delivery ETA when the delivery can be dropped off to the recipient</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"list_of_collection_points\":[\n      {\n         \"id\" : \"collection_point_id_1\",\n         \"name\" : \"collection_point_name_1\",\n         \"operating_hours\":[\n             {\"day_of_week\":0,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":1,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":2,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":3,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":4,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":5,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":6,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"}\n         ],\n         \"address_details\":{\n             \"street_and_number\":\"street_and_number 1\",\n             \"city\":\"Stockholm\",\n             \"zip_code\":\"11352\",\n             \"country_code\":\"SE\",\n             \"country\":\"Sweden\",\n             \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n          },\n         \"distance\":400,\n         \"pickup_interval\":{\n            \"start\":\"1613631600\",\n            \"end\":\"1613646000\",\n            \"formatted_as_schedule\":\"(Idag) 08:00 -12:00\"\n          },\n         \"dropoff_interval\":{\n            \"start\":\"1613664000\",\n            \"end\":\"1613682000\",\n            \"formatted_as_schedule\":\"(Idag) 17:00-22:00\",\n            \"eta\" : \"1613645000\",\n            \"eta_formatted\" : \"(Idag) 17:30\"\n         }\n      },\n      {\n         \"id\" : \"collection_point_id_2\",\n         \"name\" : \"collection_point_name_2\",\n         \"operating_hours\":[\n             {\"day_of_week\":0,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":1,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":2,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":3,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":4,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":5,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"},\n             {\"day_of_week\":6,\"opening_time\":\"09:00\",\"closing_time\":\"21:00\"}\n         ],\n         \"address_details\":{\n             \"street_and_number\":\"street_and_number 1\",\n             \"city\":\"Stockholm\",\n             \"zip_code\":\"11352\",\n             \"country_code\":\"SE\",\n             \"country\":\"Sweden\",\n             \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n          },\n         \"distance\":800,\n         \"pickup_interval\":{\n            \"start\":\"1613718000\",\n            \"end\":\"1613732400\",\n            \"formatted_as_schedule\":\"(Idag) 09:00-12:00\",\n         },\n         \"dropoff_interval\":{\n            \"start\":\"1613750400\",\n            \"end\":\"1613768400\",\n            \"formatted_as_schedule\":\"(Idag) 16:00-22:00\",\n             \"eta\" : \"1613645000\",\n             \"eta_formatted\" : \"(Idag) 17:30\"\n         }\n      }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/get_collection_points_for_zip_code?<ZIP_CODE>&country=SE&place_id=<YOUR_PLACE_ID>&limit=5'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to retrieve the collection points for the zip code</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Fail to retrieve the collection points for the zip code\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/collection_points/get_collection_points_for_zip_code.js",
+    "groupTitle": "Collection_point_deliveries"
+  },
+  {
+    "type": "post",
+    "url": "/request_delivery",
+    "title": "1. Request new collection point delivery",
+    "name": "request_delivery",
+    "group": "Collection_point_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to request a new collection point delivery from Airmee.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          },
+          {
+            "group": "Header",
+            "type": "Constant",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the place that is issuing the request</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "recipient",
+            "description": "<p>The object containing the information of the order's recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "recipient.name",
+            "description": "<p>The full name of the customer / party that is the recipient of the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "recipient.phone_number",
+            "description": "<p>The national phone number of the recipient that can be used by the courier for obtaining extra information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "recipient.phone_number_country_code",
+            "description": "<p>The country code for the phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "recipient.email",
+            "description": "<p>The email address of the recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "ecomm_id",
+            "description": "<p>The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_address",
+            "description": "<p>The object containing the delivery address information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.street_and_number",
+            "description": "<p>The name of the street and the number of the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.city",
+            "description": "<p>The name of the delivery city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.zip_code",
+            "description": "<p>The zip code for the address within the city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.country",
+            "description": "<p>The name of the delivery country</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.apartment",
+            "description": "<p>The apartment number (LGH) of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.floor",
+            "description": "<p>The floor number of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.door_code",
+            "description": "<p>The door code for entering the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.latitude",
+            "description": "<p>The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.longitude",
+            "description": "<p>The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "message_to_courier",
+            "description": "<p>Any extra information useful to the courier (e.g., apartment number, door code, etc.) or the retailer decides it is important for the courier to be aware of (e.g., call before delivering)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "items",
+            "description": "<p>An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be delivered</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.length",
+            "description": "<p>The length of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.width",
+            "description": "<p>The width of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.height",
+            "description": "<p>The height of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.weight",
+            "description": "<p>The weight of the item in grams</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.volume",
+            "description": "<p>The volume of the item in m3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.name",
+            "description": "<p>The name of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "items.parcel_id",
+            "description": "<p>The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "items.unit_price",
+            "description": "<p>An object representing the unit price of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.unit_price.amount",
+            "defaultValue": "0",
+            "description": "<p>The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.unit_price.currency",
+            "defaultValue": "SEK",
+            "description": "<p>The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.quantity",
+            "defaultValue": "1",
+            "description": "<p>The number of units of the item that are sent in the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "pickup_interval",
+            "description": "<p>Object representing the allocated time interval for pickups</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_interval",
+            "description": "<p>Object representing the allocated time interval for dropoffs</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "checks",
+            "description": "<p>Object representing the requested check for the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "checks.min_age",
+            "description": "<p>Specifies the minimum age that the recipient needs to have for the package to be handed over. Omit if not required, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.verify_id",
+            "description": "<p>If true, the courier will verify the customer id. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.take_signature",
+            "description": "<p>If true, the courier will ask the customer to sign for the delivery.  Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "extras",
+            "description": "<p>Object representing extra functionality that Airmee supports</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "extras.can_leave_outside_door",
+            "description": "<p>If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "extras.senderReference",
+            "description": "<p>Retailer's original reference for the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "other_info",
+            "description": "<p>Optional field for customer-specific custom attributes. Data sent as JSON</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "collection_point_delivery",
+            "description": "<p>The object representing collection point order.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "collection_point_delivery.collection_point_id",
+            "description": "<p>Collection point id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "order",
+            "description": "<p>the object representation of the inserted order details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "UUID",
+            "optional": false,
+            "field": "order.order_id",
+            "description": "<p>the unique Airmee identifier for the inserted order</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order.tracking_url",
+            "description": "<p>the tracking id for the order to be pre-fixed with &quot;http://tracking-staging.airmee.com/#/track/&quot; to complete the url for the tracking page of the order</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"order\":{\n     \"order_id\":\"69a84ba0-089d-11e7-b1a6-1f29a6237061\",\n     \"tracking_url\":\"30E862\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage: Collection point delivery",
+        "content": "curl --header \"Authorization:<YOUR_JWT>\" --header \"Content-Type: application/json\" -X POST https://staging-api.airmee.com/integration/request_delivery -d '\n{\n   \"place_id\":\"<YOUR_PLACE_ID>\",\n   \"recipient\":{\n      \"name\":\"Erik johansson\",\n      \"phone_number\":767000000,\n      \"phone_number_country_code\":46,\n      \"email\":\"user@email.com\"\n   },\n  \"ecomm_id\":\"123456789\",\n  \"dropoff_address\":{\n     \"street_and_number\":\"Vasagatan 11\",\n     \"city\":\"Stockholm\",\n     \"zip_code\":\"11120\",\n     \"country\":\"Sweden\"\n  },\n  \"dropoff_message_to_courier\":\"Any specific message that could help the courier.\",\n  \"items\":[\n     {\n        \"parcel_id\":\"123456789-1\",\n        \"length\":10,\n        \"width\":10,\n        \"height\":10,\n        \"weight\":100,\n        \"volume\":0.001\n     },\n     {\n        \"parcel_id\":\"123456789-2\",\n        \"length\":20,\n        \"width\":20,\n        \"height\":20,\n        \"weight\":2000,\n        \"volume\":0.008\n     }\n  ],\n  \"pickup_interval\":{\n     \"start\":1613631600,\n     \"end\":1613646000\n  },\n  \"dropoff_interval\":{\n     \"start\":1613664000,\n     \"end\":1613682000\n  },\n \"extras\":{\n     \"senderReference\":\"012345678\"\n  },\n \"collection_point_delivery\":{\n      \"collection_point_id\": \"7d93f748-c45c-11eb-9d9f-b3ea84739a93\"\n   }\n}'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFoundError",
+            "description": "<p>The store id does not exist</p>"
+          }
+        ],
+        "Error 412": [
+          {
+            "group": "Error 412",
+            "optional": false,
+            "field": "GeocodeError",
+            "description": "<p>Failed to geocode the address</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to insert order to database</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\":\"Invalid inputs supplied\",\n  \"extraMessage\":\"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFoundError",
+          "content": "HTTP/1.1 404 Order Not Found\n{\n  \"message\": \"Store does not exist.\",\n  \"extraMessage\": \"The store id does not exist\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "GeocodeError",
+          "content": "HTTP/1.1 412 Bad Request\n{\n  \"message\":\"Geocoding error\",\n  \"extraMessage\":\"Address could not be found: <address>\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Please contact support if this persists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/collection_points/insert_accepted_store_order.js",
+    "groupTitle": "Collection_point_deliveries"
+  },
+  {
+    "type": "POST",
+    "url": "/cancel_delivery",
+    "title": "4. Cancel a delivery",
+    "name": "cancel_delivery",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to cancel a delivery that was not already picked up.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          },
+          {
+            "group": "Header",
+            "type": "Constant",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>The id of the order you want to cancel</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>The id of the place the cancelling order is for</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "deletion_status",
+            "description": "<p>Whether the deletion was successful or not</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"deletion_status\": \"true\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization:<YOUR_JWT>\" --header \"Content-Type: application/json\" -X POST https://staging-api.airmee.com/integration/cancel_delivery -d '\n{\n  \"place_id\": \"<YOUR_PLACE_ID>\",\n  \"order_id\":\"<YOUR_ORDER_ID>\"\n}'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFoundError",
+            "description": "<p>No order found</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to delete order associated with the order_id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFoundError",
+          "content": "HTTP/1.1 404 Order cannot be deleted\n{\n  \"message\": \"No order associated with the given place_id and order_id pair.\",\n  \"extraMessage\": \"No order found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to delete order associated with the order_id\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/cancelations/cancel_order.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/delivery_intervals_for_zip_code/:zip_code&:country&:place_id",
+    "title": "3. Delivery intervals for TA",
+    "name": "delivery_intervals",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the availability based on zip code and country. This method queries the server and returns a list of available delivery times. This endpoint is mainly used by TA-systems to validate that the selected delivery time by the customer is still available prior to invoking a booking request.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code of the region that you want to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "defaultValue": "SE",
+            "description": "<p>The country that the zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_of_schedules",
+            "description": "<p>the preformatted available list of schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval",
+            "description": "<p>An object representing the pickup interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be picked up from the specified place</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval",
+            "description": "<p>An object representing the dropoff interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be dropped off to the recipient</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"list_of_schedules\":[\n      {\n         \"pickup_interval\":{\n            \"start\":\"1613631600\",\n            \"end\":\"1613646000\",\n            \"formatted_as_schedule\":\"(Idag) 08:00 -12:00\",\n            \"interval_category\":\"Interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"Interval\",\n            \"start\":\"1613664000\",\n            \"end\":\"1613682000\",\n            \"formatted_as_schedule\":\"(Idag) 17:00-22:00\"\n         },\n         \"extras\":{}\n      },\n      {\n         \"pickup_interval\":{\n            \"start\":\"1613718000\",\n            \"end\":\"1613732400\",\n            \"formatted_as_schedule\":\"(Imorgon) 08:00-12:00\",\n            \"interval_category\":\"Interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"Interval\",\n            \"start\":\"1613750400\",\n            \"end\":\"1613768400\",\n            \"formatted_as_schedule\":\"(Imorgon) 17:00-22:00\"\n         },\n         \"extras\":{}\n      }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/delivery_intervals_for_zip_code?zip_code=<ZIP_CODE>&country=SE&place_id=<YOUR_PLACE_ID>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to retrieve the schedule of the store</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to retrieve the schedule of the store\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/availability/availability_by_zip_code.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/checkout_delivery_intervals_for_zip_code/:zip_code&:country&:place_id&:date",
+    "title": "2. Delivery intervals for checkout",
+    "name": "delivery_intervals_for_checkout",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the availability based on zip code and country with customer specific cut off times for checkout. This method queries the server and returns a list of available delivery times that the customer can choose from. In case a delivery time cannot be allocated because of the address, the endpoint will reply with an empty list. An offset should be provided with the &quot;date&quot; parameter. This offset denotes the estimated time it takes between this request is being made at checkout until the order is ready to be booked. Most commonly an order is ready to be booked when it has been packed.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code of the region that you want to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "defaultValue": "SE",
+            "description": "<p>The country that the zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": true,
+            "field": "date",
+            "defaultValue": "now",
+            "description": "<p>The offset time (I.e. 2020-01-01 10:00:00) in time zone 'Europe/Stockholm' for earliest available delivery windows. If it takes 2h from customer checkout until the orders is ready to be delivered, then set the offset to current time + 2 hours. This can also be used in case the customer wants a delivery date further than one week into the future (which is the default Airmee delivery window response)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_of_schedules",
+            "description": "<p>the preformatted available list of schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval",
+            "description": "<p>An object representing the pickup interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be picked up from the specified place</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval",
+            "description": "<p>An object representing the dropoff interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be dropped off to the recipient</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.interval_category",
+            "description": "<p>can either be &quot;Interval&quot; stating a regular delivery withing a time interval or &quot;Express <within x hour>&quot; stating an express delivery withing x hour(s)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.interval_category",
+            "description": "<p>can either be &quot;Interval&quot; stating a regular delivery withing a time interval or &quot;Express <within x hour>&quot; stating an express delivery withing x hour(s)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.extras",
+            "description": "<p>An object containing extra information about the time interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "list_of_schedules.extras.is_green",
+            "description": "<p>A boolean representing eco-delivery</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"list_of_schedules\":[\n      {\n         \"pickup_interval\":{\n            \"start\":\"1613631600\",\n            \"end\":\"1613646000\",\n            \"formatted_as_schedule\":\"(Idag) 08:00 -12:00\",\n            \"interval_category\":\"Interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"Interval\",\n            \"start\":\"1613664000\",\n            \"end\":\"1613682000\",\n            \"formatted_as_schedule\":\"(Idag) 17:00-22:00\"\n         },\n         \"extras\":{\n            \"is_green\":true\n         }\n      },\n      {\n         \"pickup_interval\":{\n            \"start\":\"1613718000\",\n            \"end\":\"1613732400\",\n            \"formatted_as_schedule\":\"(Imorgon) 08:00-12:00\",\n            \"interval_category\":\"Interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"Interval\",\n            \"start\":\"1613750400\",\n            \"end\":\"1613768400\",\n            \"formatted_as_schedule\":\"(Imorgon) 17:00-22:00\"\n         },\n         \"extras\":{\n            \"is_green\":true\n         }\n      }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/checkout_delivery_intervals_for_zip_code?zip_code=<ZIP_CODE>&country=SE&place_id=<YOUR_PLACE_ID>&date=<DATE>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to retrieve the schedule of the store</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to retrieve the schedule of the store\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/availability/checkout_availability_by_zip_code.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/product_threshold_for_place/:place_id",
+    "title": "5. Dimensions and weight thresholds",
+    "name": "dimensions_and_weight",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to retrieve the threshold / maximum allowed dimensions (height, width, length) and weight for the products that can be delivered by Airmee.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>The long lived JWT of the place</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "threshold_values",
+            "description": "<p>the threshold value for each of the available dimensions, i.e., height (cm), lenght (cm), width (cm), and weight (kg)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "threshold_values.height",
+            "description": "<p>the threshold value for height in centimeters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "threshold_values.length",
+            "description": "<p>the threshold value for length in centimeters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "threshold_values.width",
+            "description": "<p>the threshold value for width in centimeters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "threshold_values.weight",
+            "description": "<p>the threshold value for weight in kilograms</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"threshold_values\": {\n    \"height\": 100.0,\n    \"length\": 100.0,\n    \"width\": 100.0,\n    \"weight\": 2.0\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/product_threshold_for_place?place_id=<YOUR_PLACE_ID>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to retrieve product thresholds</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to retrieve product thresholds\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/thresholds/get_product_thresholds.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "post",
+    "url": "/request_delivery",
+    "title": "1. Request new delivery",
+    "name": "request_delivery",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to request a new delivery from Airmee.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          },
+          {
+            "group": "Header",
+            "type": "Constant",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the place that is issuing the request</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "recipient",
+            "description": "<p>The object containing the information of the order's recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "recipient.name",
+            "description": "<p>The fullname of the customer / party that is the recipient of the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "recipient.phone_number",
+            "description": "<p>The national phone number of the recipient that can be used by the courier for obtaining extra information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "recipient.phone_number_country_code",
+            "description": "<p>The country code for the phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "recipient.email",
+            "description": "<p>The email address of the recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "ecomm_id",
+            "description": "<p>The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_address",
+            "description": "<p>The object containing the delivery address information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.street_and_number",
+            "description": "<p>The name of the street and the number of the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.city",
+            "description": "<p>The name of the delivery city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.zip_code",
+            "description": "<p>The zip code for the address within the city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.country",
+            "description": "<p>The name of the delivery country</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.apartment",
+            "description": "<p>The apartment number (LGH) of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.floor",
+            "description": "<p>The floor number of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.door_code",
+            "description": "<p>The door code for entering the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.latitude",
+            "description": "<p>The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.longitude",
+            "description": "<p>The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "message_to_courier",
+            "description": "<p>Any extra information useful to the courier (e.g., apartment number, door code, etc.) or the retailer decides it is important for the courier to be aware of (e.g., call before delivering)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "items",
+            "description": "<p>An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be delivered</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.length",
+            "description": "<p>The length of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.width",
+            "description": "<p>The width of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.height",
+            "description": "<p>The height of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.weight",
+            "description": "<p>The weight of the item in grams</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.volume",
+            "description": "<p>The volume of the item in m3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.name",
+            "description": "<p>The name of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "items.parcel_id",
+            "description": "<p>The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "items.unit_price",
+            "description": "<p>An object representing the unit price of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.unit_price.amount",
+            "defaultValue": "0",
+            "description": "<p>The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.unit_price.currency",
+            "defaultValue": "SEK",
+            "description": "<p>The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.quantity",
+            "defaultValue": "1",
+            "description": "<p>The number of units of the item that are sent in the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "pickup_interval",
+            "description": "<p>Object representing the allocated time interval for pickups</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_interval",
+            "description": "<p>Object representing the allocated time interval for dropoffs</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "checks",
+            "description": "<p>Object representing the requested check for the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "checks.min_age",
+            "description": "<p>Specifies the minimum age that the recipient needs to have for the package to be handed over. Omit if not required, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.verify_id",
+            "description": "<p>If true, the courier will verify the customer id. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.take_signature",
+            "description": "<p>If true, the courier will ask the customer to sign for the delivery.  Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "extras",
+            "description": "<p>Object representing extra functionality that Airmee supports</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "extras.can_leave_outside_door",
+            "description": "<p>If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "extras.senderReference",
+            "description": "<p>Retailer's original reference for the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "other_info",
+            "description": "<p>Optional field for customer-specific custom attributes. Data sent as JSON</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "order",
+            "description": "<p>the object representation of the inserted order details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "UUID",
+            "optional": false,
+            "field": "order.order_id",
+            "description": "<p>the unique Airmee identifier for the inserted order</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order.tracking_url",
+            "description": "<p>the tracking id for the order to be pre-fixed with &quot;http://tracking-staging.airmee.com/#/track/&quot; to complete the url for the tracking page of the order</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"order\":{\n     \"order_id\":\"69a84ba0-089d-11e7-b1a6-1f29a6237061\",\n     \"tracking_url\":\"30E862\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage: Regular delivery",
+        "content": "curl --header \"Authorization:<YOUR_JWT>\" --header \"Content-Type: application/json\" -X POST https://staging-api.airmee.com/integration/request_delivery -d '\n{\n   \"place_id\":\"<YOUR_PLACE_ID>\",\n   \"recipient\":{\n      \"name\":\"Erik johansson\",\n      \"phone_number\":767000000,\n      \"phone_number_country_code\":46,\n      \"email\":\"user@email.com\"\n   },\n  \"ecomm_id\":\"123456789\",\n  \"dropoff_address\":{\n     \"street_and_number\":\"Vasagatan 11\",\n     \"city\":\"Stockholm\",\n     \"zip_code\":\"11120\",\n     \"country\":\"Sweden\"\n  },\n  \"dropoff_message_to_courier\":\"Any specific message that could help the courier.\",\n  \"items\":[\n     {\n        \"parcel_id\":\"123456789-1\",\n        \"length\":10,\n        \"width\":10,\n        \"height\":10,\n        \"weight\":100,\n        \"volume\":0.001\n     },\n     {\n        \"parcel_id\":\"123456789-2\",\n        \"length\":20,\n        \"width\":20,\n        \"height\":20,\n        \"weight\":2000,\n        \"volume\":0.008\n     }\n  ],\n  \"pickup_interval\":{\n     \"start\":1613631600,\n     \"end\":1613646000\n  },\n  \"dropoff_interval\":{\n     \"start\":1613664000,\n     \"end\":1613682000\n  },\n \"extras\":{\n     \"senderReference\":\"012345678\"\n  }\n}'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFoundError",
+            "description": "<p>The store id does not exist</p>"
+          }
+        ],
+        "Error 412": [
+          {
+            "group": "Error 412",
+            "optional": false,
+            "field": "GeocodeError",
+            "description": "<p>Failed to geocode the address</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to insert order to database</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\":\"Invalid inputs supplied\",\n  \"extraMessage\":\"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFoundError",
+          "content": "HTTP/1.1 404 Order Not Found\n{\n  \"message\": \"Store does not exist.\",\n  \"extraMessage\": \"The store id does not exist\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "GeocodeError",
+          "content": "HTTP/1.1 412 Bad Request\n{\n  \"message\":\"Geocoding error\",\n  \"extraMessage\":\"Address could not be found: <address>\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Please contact support if this persists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/issue_order/insert_accepted_store_order.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/service_area_availability_for_zip_code/:place_id&:zip_code&:country&:street_and_number&:city",
+    "title": "6. Service area availabilty",
+    "name": "service_area_availability",
+    "group": "Home_deliveries",
+    "version": "0.3.0",
+    "description": "<p>This request can take two different sets of parameters. When invoked with an address the city parameter will be required. The pair together with the optional country which defaults to &quot;SE&quot; will be  geocoded. The set of coordinates will then be used to verify whether Airmee delivers for the specified store (via place id) at that address. When invoked without an address the zip code together with country will be used to determine service availability</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>An id that identifies a specific store</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code that is to be checked for store availability</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "description": "<p>The 2-letter ISO country-code of the country</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "street_and_number",
+            "description": "<p>The street address. When this param is present then City will be required and not optional</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "city",
+            "description": "<p>The name of the city for the address</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "inside_service_area",
+            "description": "<p>A Boolean stating if the given store is within the service area or not</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"inside_service_area\":true\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"inside_service_area\":false\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage without specifying address:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/service_area_availability_for_zip_code?place_id=<PLACE_ID>&zip_code=<ZIP_CODE>&country=SE'",
+        "type": "json"
+      },
+      {
+        "title": "(curl) Example usage with address and city:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/service_area_availability_for_zip_code?place_id=<PLACE_ID>&zip_code=<ZIP_CODE>&country=SE&street_and_number=><STREET AND NUMBER>&city=<CITY>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 412": [
+          {
+            "group": "Error 412",
+            "optional": false,
+            "field": "GeocodeError",
+            "description": "<p>Failed to geocode address</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to retrieve the service area availability for the store</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "GeocodeError",
+          "content": "HTTP/1.1 412 Bad Request\n{\n  \"message\":\"Geocoding error\",\n  \"extraMessage\":\"Address could not be found: <address>\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to retrieve the service area availability for the store\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/availability/service_area_check.js",
+    "groupTitle": "Home_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/get_parcel_lockers_for_zip_code/:zip_code&:country&:place_id&:limit",
+    "title": "2. Parcel locker delivery intervals",
+    "name": "get_parcel_lockers_for_zip_code",
+    "group": "Parcel_locker_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the details and availability of parcel locker based on zip code and country up to a given limit. This method queries the server and returns a list of available delivery times. This endpoint is mainly used by TA-systems to validate that the selected delivery time by the customer is still available prior to invoking a booking request.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code of the region that you want to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "defaultValue": "SE",
+            "description": "<p>The country  code that zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "limit",
+            "defaultValue": "20",
+            "description": "<p>The number of closest parcel lockers to retrieve</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_of_parcel_lockers",
+            "description": "<p>the preformatted available list of parcel locker schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.name",
+            "description": "<p>Name of the locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details",
+            "description": "<p>An object representing the address of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.street_and_number",
+            "description": "<p>Street name and street number of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.city",
+            "description": "<p>City of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.country",
+            "description": "<p>Country of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.zip_code",
+            "description": "<p>Zip code of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.country_code",
+            "description": "<p>ISO country code of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.coordinates",
+            "description": "<p>An object representing coordinates of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.coordinates.latitude",
+            "description": "<p>Latitude of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "list_of_parcel_lockers.address_details.coordinates.longitude",
+            "description": "<p>Longitude of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "list_of_parcel_lockers.distance",
+            "description": "<p>Approx. distance from the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.operating_hours",
+            "description": "<p>An object representing the parcel locker operating hours</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "list_of_parcel_lockers.operating_hours.day_of_week",
+            "description": "<p>Number representation for day of week</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.operating_hours.open_all_day",
+            "description": "<p>Boolean representation if locker is open or closed. If true, then open else closed</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.pickup_interval",
+            "description": "<p>An object representing the pickup interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_parcel_lockers.pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_parcel_lockers.pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.pickup_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be picked up from the specified place</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval",
+            "description": "<p>An object representing the dropoff interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be dropped off to the recipient</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval.eta",
+            "description": "<p>Unix timestamp for the ETA associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_parcel_lockers.dropoff_interval.eta_formatted",
+            "description": "<p>the human readable delivery ETA when the delivery can be dropped off to the recipient</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_parcel_lockers.extras",
+            "description": "<p>An object containing extra information about the delivery interval</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"list_of_parcel_lockers\":[ss\n      {\n         \"id\" : \"locker_id_1\",\n         \"name\" : \"locker_name_1\",\n         \"operating_hours\":[\n             {\"day_of_week\":0,\"open_all_day\":true},\n             {\"day_of_week\":1,\"open_all_day\":true},\n             {\"day_of_week\":2,\"open_all_day\":true},\n             {\"day_of_week\":3,\"open_all_day\":true},\n             {\"day_of_week\":4,\"open_all_day\":true},\n             {\"day_of_week\":5,\"open_all_day\":true},\n             {\"day_of_week\":6,\"open_all_day\":true}\n         ],\n         \"address_details\":{\n             \"street_and_number\":\"street_and_number 1\",\n             \"city\":\"Stockholm\",\n             \"zip_code\":\"11352\",\n             \"country_code\":\"SE\",\n             \"country\":\"Sweden\",\n             \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n          },\n         \"distance\":400,\n         \"pickup_interval\":{\n            \"start\":\"1613631600\",\n            \"end\":\"1613646000\",\n            \"formatted_as_schedule\":\"(Idag) 08:00 -12:00\"\n          },\n         \"dropoff_interval\":{\n            \"start\":\"1613664000\",\n            \"end\":\"1613682000\",\n            \"formatted_as_schedule\":\"(Idag) 17:00-22:00\",\n            \"eta\" : \"1613645000\",\n            \"eta_formatted\" : \"(Idag) 17:30\"\n         },\n         \"extras\":{}\n      },\n      {\n         \"id\" : \"locker_id_2\",\n         \"name\" : \"locker_name_2\",\n         \"operating_hours\":[\n             {\"day_of_week\":0,\"open_all_day\":true},\n             {\"day_of_week\":1,\"open_all_day\":true},\n             {\"day_of_week\":2,\"open_all_day\":true},\n             {\"day_of_week\":3,\"open_all_day\":true},\n             {\"day_of_week\":4,\"open_all_day\":true},\n             {\"day_of_week\":5,\"open_all_day\":true},\n             {\"day_of_week\":6,\"open_all_day\":true}\n         ],\n         \"address_details\":{\n             \"street_and_number\":\"street_and_number 1\",\n             \"city\":\"Stockholm\",\n             \"zip_code\":\"11352\",\n             \"country_code\":\"SE\",\n             \"country\":\"Sweden\",\n             \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n          },\n         \"distance\":800,\n         \"pickup_interval\":{\n            \"start\":\"1613718000\",\n            \"end\":\"1613732400\",\n            \"formatted_as_schedule\":\"(Idag) 09:00-12:00\",\n         },\n         \"dropoff_interval\":{\n            \"start\":\"1613750400\",\n            \"end\":\"1613768400\",\n            \"formatted_as_schedule\":\"(Idag) 16:00-22:00\",\n             \"eta\" : \"1613645000\",\n             \"eta_formatted\" : \"(Idag) 17:30\"\n         },\n         \"extras\":{}\n      }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/get_parcel_lockers_for_zip_code?<ZIP_CODE>&country=SE&place_id=<YOUR_PLACE_ID>&limit=5'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to retrieve the parcel lockers for the zip code</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Fail to retrieve the parcel lockers for the zip code\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/availability/parcel_lockers_availability_by_zip_code.js",
+    "groupTitle": "Parcel_locker_deliveries"
+  },
+  {
+    "type": "get",
+    "url": "/get_parcel_locker_details/:parcel_locker_ids",
+    "title": "3. Parcel locker details",
+    "name": "parcel_locker_details",
+    "group": "Parcel_locker_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the details of a parcel locker by passing parcel locker id(s). This method queries the server and returns a list of parcel lockers with details like name, address, coordinates and operating hours.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_ids",
+            "description": "<p>The parcel locker id(s)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "parcel_locker_details",
+            "description": "<p>the preformatted details of a locker for the given locker id or list of locker ids as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.name",
+            "description": "<p>Name of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "parcel_locker_details.address_details",
+            "description": "<p>An object representing the address of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.street_and_number",
+            "description": "<p>Street name and street number of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.city",
+            "description": "<p>City of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.country",
+            "description": "<p>Country of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.zip_code",
+            "description": "<p>Zip code of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.country_code",
+            "description": "<p>ISO country code of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.coordinates",
+            "description": "<p>An object representing coordinates of the parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.coordinates.latitude",
+            "description": "<p>Latitude of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Double",
+            "optional": false,
+            "field": "parcel_locker_details.address_details.coordinates.longitude",
+            "description": "<p>Longitude of parcel locker</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "parcel_locker_details.operating_hours",
+            "description": "<p>An object representing the parcel locker operating hours</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "parcel_locker_details.operating_hours.day_of_week",
+            "description": "<p>Number representation for day of week</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_details.operating_hours.open_all_day",
+            "description": "<p>Boolean representation if locker is open or closed. If true, then open else closed</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"parcel_locker_details\":\n     [\n         {\n             \"id\" : \"locker_id_1\",\n             \"name\" : \"locker_name_1\",\n             \"operating_hours\":[\n                 {\"day_of_week\":0,\"open_all_day\":true},\n                 {\"day_of_week\":1,\"open_all_day\":true},\n                 {\"day_of_week\":2,\"open_all_day\":true},\n                 {\"day_of_week\":3,\"open_all_day\":true},\n                 {\"day_of_week\":4,\"open_all_day\":true},\n                 {\"day_of_week\":5,\"open_all_day\":true},\n                 {\"day_of_week\":6,\"open_all_day\":true}\n             ],\n             \"address_details\":{\n                 \"street_and_number\":\"street_and_number 1\",\n                 \"city\":\"Stockholm\",\n                 \"zip_code\":\"11359\",\n                 \"country_code\":\"SE\",\n                 \"country\":\"Sweden\",\n                 \"coordinates\":{\"latitude\":59.339963,\"longitude\":18.060152}\n             }\n         },\n         {\n             \"id\" : \"locker_id_2\",\n             \"name\" : \"locker_name_2\",\n             \"operating_hours\":[\n                 {\"day_of_week\":0,\"open_all_day\":true},\n                 {\"day_of_week\":1,\"open_all_day\":true},\n                 {\"day_of_week\":2,\"open_all_day\":true},\n                 {\"day_of_week\":3,\"open_all_day\":true},\n                 {\"day_of_week\":4,\"open_all_day\":true},\n                 {\"day_of_week\":5,\"open_all_day\":true},\n                 {\"day_of_week\":6,\"open_all_day\":true}\n             ],\n             \"address_details\":{\n                 \"street_and_number\":\"street_and_number 2\",\n                 \"city\":\"Stockholm\",\n                 \"zip_code\":\"11120\",\n                 \"country_code\":\"SE\",\n                 \"country\":\"Sweden\",\n                 \"coordinates\":{\"latitude\":59.339983,\"longitude\":18.060252}\n             }\n         }\n      ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/get_parcel_locker_details?parcel_locker_ids=<PARCEL_LOCKER_ID(s)>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to retrieve the parcel locker data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Fail to retrieve the parcel locker data\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/lockers/get_parcel_locker_details.js",
+    "groupTitle": "Parcel_locker_deliveries"
+  },
+  {
+    "type": "post",
+    "url": "/request_delivery",
+    "title": "1. Request new parcel locker delivery",
+    "name": "request_delivery",
+    "group": "Parcel_locker_deliveries",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to request a new parcel locker delivery from Airmee.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          },
+          {
+            "group": "Header",
+            "type": "Constant",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the place that is issuing the request</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "recipient",
+            "description": "<p>The object containing the information of the order's recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "recipient.name",
+            "description": "<p>The full name of the customer / party that is the recipient of the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "recipient.phone_number",
+            "description": "<p>The national phone number of the recipient that can be used by the courier for obtaining extra information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "recipient.phone_number_country_code",
+            "description": "<p>The country code for the phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "recipient.email",
+            "description": "<p>The email address of the recipient</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "ecomm_id",
+            "description": "<p>The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_address",
+            "description": "<p>The object containing the delivery address information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.street_and_number",
+            "description": "<p>The name of the street and the number of the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.city",
+            "description": "<p>The name of the delivery city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.zip_code",
+            "description": "<p>The zip code for the address within the city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dropoff_address.country",
+            "description": "<p>The name of the delivery country</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.apartment",
+            "description": "<p>The apartment number (LGH) of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.floor",
+            "description": "<p>The floor number of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.door_code",
+            "description": "<p>The door code for entering the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.latitude",
+            "description": "<p>The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "dropoff_address.longitude",
+            "description": "<p>The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "message_to_courier",
+            "description": "<p>Any extra information useful to the courier (e.g., apartment number, door code, etc.) or the retailer decides it is important for the courier to be aware of (e.g., call before delivering)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "items",
+            "description": "<p>An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be delivered</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.length",
+            "description": "<p>The length of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.width",
+            "description": "<p>The width of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.height",
+            "description": "<p>The height of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.weight",
+            "description": "<p>The weight of the item in grams</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": true,
+            "field": "items.volume",
+            "description": "<p>The volume of the item in m3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.name",
+            "description": "<p>The name of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "items.parcel_id",
+            "description": "<p>The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "items.unit_price",
+            "description": "<p>An object representing the unit price of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.unit_price.amount",
+            "defaultValue": "0",
+            "description": "<p>The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.unit_price.currency",
+            "defaultValue": "SEK",
+            "description": "<p>The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.quantity",
+            "defaultValue": "1",
+            "description": "<p>The number of units of the item that are sent in the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "pickup_interval",
+            "description": "<p>Object representing the allocated time interval for pickups</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_interval",
+            "description": "<p>Object representing the allocated time interval for dropoffs</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff time as obtained from the Delivery intervals for checkout query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "checks",
+            "description": "<p>Object representing the requested check for the delivery</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "checks.min_age",
+            "description": "<p>Specifies the minimum age that the recipient needs to have for the package to be handed over. Omit if not required, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.verify_id",
+            "description": "<p>If true, the courier will verify the customer id. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "checks.take_signature",
+            "description": "<p>If true, the courier will ask the customer to sign for the delivery.  Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "extras",
+            "description": "<p>Object representing extra functionality that Airmee supports</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "extras.can_leave_outside_door",
+            "description": "<p>If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "extras.senderReference",
+            "description": "<p>Retailer's original reference for the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "other_info",
+            "description": "<p>Optional field for customer-specific custom attributes. Data sent as JSON</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "parcel_locker_delivery",
+            "description": "<p>The object representing parcel locker order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "parcel_locker_delivery.locker_location_id",
+            "description": "<p>Parcel locker id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "order",
+            "description": "<p>the object representation of the inserted order details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "UUID",
+            "optional": false,
+            "field": "order.order_id",
+            "description": "<p>the unique Airmee identifier for the inserted order</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order.tracking_url",
+            "description": "<p>the tracking id for the order to be pre-fixed with &quot;http://tracking-staging.airmee.com/#/track/&quot; to complete the url for the tracking page of the order</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "allowedValues": [
+              "\"locker not found\"",
+              "\"something went wrong while booking a delivery with parcel locker. Airmee will deliver the order to receiver address\""
+            ],
+            "optional": true,
+            "field": "order.message",
+            "description": "<p>reason why order was booked as regular delivery when locker delivery was requested because either locker id was incorrect or specified locker wasn't available.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"order\":{\n     \"order_id\":\"69a84ba0-089d-11e7-b1a6-1f29a6237061\",\n     \"tracking_url\":\"30E862\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage: Parcel locker delivery",
+        "content": "curl --header \"Authorization:<YOUR_JWT>\" --header \"Content-Type: application/json\" -X POST https://staging-api.airmee.com/integration/request_delivery -d '\n{\n   \"place_id\":\"<YOUR_PLACE_ID>\",\n   \"recipient\":{\n      \"name\":\"Erik johansson\",\n      \"phone_number\":767000000,\n      \"phone_number_country_code\":46,\n      \"email\":\"user@email.com\"\n   },\n  \"ecomm_id\":\"123456789\",\n  \"dropoff_address\":{\n     \"street_and_number\":\"Vasagatan 11\",\n     \"city\":\"Stockholm\",\n     \"zip_code\":\"11120\",\n     \"country\":\"Sweden\"\n  },\n  \"dropoff_message_to_courier\":\"Any specific message that could help the courier.\",\n  \"items\":[\n     {\n        \"parcel_id\":\"123456789-1\",\n        \"length\":10,\n        \"width\":10,\n        \"height\":10,\n        \"weight\":100,\n        \"volume\":0.001\n     },\n     {\n        \"parcel_id\":\"123456789-2\",\n        \"length\":20,\n        \"width\":20,\n        \"height\":20,\n        \"weight\":2000,\n        \"volume\":0.008\n     }\n  ],\n  \"pickup_interval\":{\n     \"start\":1613631600,\n     \"end\":1613646000\n  },\n  \"dropoff_interval\":{\n     \"start\":1613664000,\n     \"end\":1613682000\n  },\n \"extras\":{\n     \"senderReference\":\"012345678\"\n  },\n \"parcel_locker_delivery\":{\n     \"locker_location_id\":\"21aea180-eaef-11eb-8a2e-4b348ff31b02\"\n }\n}'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFoundError",
+            "description": "<p>The store id does not exist</p>"
+          }
+        ],
+        "Error 412": [
+          {
+            "group": "Error 412",
+            "optional": false,
+            "field": "GeocodeError",
+            "description": "<p>Failed to geocode the address</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to insert order to database</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\":\"Invalid inputs supplied\",\n  \"extraMessage\":\"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFoundError",
+          "content": "HTTP/1.1 404 Order Not Found\n{\n  \"message\": \"Store does not exist.\",\n  \"extraMessage\": \"The store id does not exist\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "GeocodeError",
+          "content": "HTTP/1.1 412 Bad Request\n{\n  \"message\":\"Geocoding error\",\n  \"extraMessage\":\"Address could not be found: <address>\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Please contact support if this persists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/lockers/insert_accepted_store_order.js",
+    "groupTitle": "Parcel_locker_deliveries"
+  },
+  {
+    "type": "post",
+    "url": "/request_return",
+    "title": "1. Request new return",
+    "name": "request_return",
+    "group": "Returns",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint to request a new return delivery from Airmee.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          },
+          {
+            "group": "Header",
+            "type": "Constant",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the place that is the receiver of the request</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "customer",
+            "description": "<p>The object containing the information about the customer ordering the pickup</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "customer.name",
+            "description": "<p>The fullname of the customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "customer.phone_number",
+            "description": "<p>The national phone number of the customer that can be used by the courier for obtaining extra information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "customer.phone_number_country_code",
+            "description": "<p>The country code for the phone number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "customer.email",
+            "description": "<p>The email address of the customer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "ecomm_id",
+            "description": "<p>The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "pickup_address",
+            "description": "<p>The object containing the pickup address information</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pickup_address.street_and_number",
+            "description": "<p>The name of the street and the number of the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pickup_address.city",
+            "description": "<p>The name of the delivery city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pickup_address.zip_code",
+            "description": "<p>The zip code for the address within the city</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pickup_address.country",
+            "description": "<p>The name of the delivery country</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_address.apartment",
+            "description": "<p>The apartment number (LGH) of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_address.floor",
+            "description": "<p>The floor number of the address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_address.door_code",
+            "description": "<p>The door code for entering the building</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_address.latitude",
+            "description": "<p>The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_address.longitude",
+            "description": "<p>The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "pickup_message_to_courier",
+            "description": "<p>Any extra information useful to the courier (e.g., apartment number, door code, etc.)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "items",
+            "description": "<p>An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be picked up</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": false,
+            "field": "items.length",
+            "description": "<p>The length of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": false,
+            "field": "items.width",
+            "description": "<p>The width of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": false,
+            "field": "items.height",
+            "description": "<p>The height of the item in centimeters</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": false,
+            "field": "items.weight",
+            "description": "<p>The weight of the item in grams</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Double",
+            "optional": false,
+            "field": "items.volume",
+            "description": "<p>The volume of the item in m3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.name",
+            "description": "<p>The name of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "items.parcel_id",
+            "description": "<p>The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "items.unit_price",
+            "description": "<p>An object representing the unit price of the item</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.unit_price.amount",
+            "defaultValue": "0",
+            "description": "<p>The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "items.unit_price.currency",
+            "defaultValue": "SEK",
+            "description": "<p>The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": true,
+            "field": "items.quantity",
+            "defaultValue": "1",
+            "description": "<p>The number of units of the item that are sent in the order</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "pickup_interval",
+            "description": "<p>Object representing the allocated time interval for pickups</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup time as obtained from the Return intervals query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup time as obtained from the Return intervals query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "dropoff_interval",
+            "description": "<p>Object representing the allocated time interval for dropoffs</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff time as obtained from the Return intervals query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Long",
+            "optional": false,
+            "field": "dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff time as obtained from the Return intervals query</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": true,
+            "field": "extras",
+            "description": "<p>Object representing extra functionality that Airmee supports</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "extras.can_pickup_from_outside_door",
+            "description": "<p>If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "order",
+            "description": "<p>the object representation of the inserted order return details</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "UUID",
+            "optional": false,
+            "field": "order.order_id",
+            "description": "<p>the unique Airmee identifier for the inserted order return</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "order.tracking_url",
+            "description": "<p>the tracking id for the order to be pre-fixed with &quot;http://tracking-staging.airmee.com/#/track/&quot; to complete the url for the tracking page of the order</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"order\":{\n     \"order_id\":\"69a84ba0-089d-11e7-b1a6-1f29a6237061\",\n     \"tracking_url\":\"30E862\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization:<YOUR_JWT>\" --header \"Content-Type: application/json\" -X POST https://staging-api.airmee.com/integration/request_return -d '\n{\n  \"place_id\":\"<YOUR_PLACE_ID>\",\n  \"customer\":{\n     \"name\":\"Erik johansson\",\n     \"phone_number\":767000000,\n     \"phone_number_country_code\":46,\n     \"email\":\"user@nomail.com\"\n  },\n  \"ecomm_id\":\"123456789\",\n  \"pickup_address\":{\n     \"street_and_number\":\"Vagatan 11\",\n     \"city\":\"Stockholm\",\n     \"zip_code\":\"11120\",\n     \"country\":\"Sweden\"\n  },\n  \"pickup_message_to_courier\":\"Any specific message that could help the courier.\",\n  \"items\":[\n     {\n        \"parcel_id\":\"123456789-1\",\n        \"length\":10,\n        \"width\":10,\n        \"height\":10,\n        \"weight\":100,\n        \"volume\":0.001\n     },\n     {\n        \"parcel_id\":\"123456789-2\",\n        \"length\":20,\n        \"width\":20,\n        \"height\":20,\n        \"weight\":2000,\n        \"volume\":0.008\n     }\n  ],\n  \"pickup_interval\":{\n     \"start\":1613750400,\n     \"end\":1613768400\n  },\n  \"dropoff_interval\":{\n     \"start\":1613995200,\n     \"end\":1614020400\n  }\n}'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFoundError",
+            "description": "<p>The store id does not exist</p>"
+          }
+        ],
+        "Error 412": [
+          {
+            "group": "Error 412",
+            "optional": false,
+            "field": "GeocodeError",
+            "description": "<p>Failed to geocode the address</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Fail to insert order to database</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "NotFoundError",
+          "content": "HTTP/1.1 404 Order Not Found\n{\n  \"message\": \"Store does not exist.\",\n  \"extraMessage\": \"The store id does not exist\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "GeocodeError",
+          "content": "HTTP/1.1 412 Bad Request\n{\n  \"message\":\"Geocoding error\",\n  \"extraMessage\":\"Address could not be found: <address>\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Please contact support if this persists\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/issue_order/insert_accepted_return.js",
+    "groupTitle": "Returns"
+  },
+  {
+    "type": "get",
+    "url": "/delivery_intervals_for_zip_code_returns/:zip_code&:country&:place_id",
+    "title": "2. Return intervals",
+    "name": "return_intervals",
+    "group": "Returns",
+    "version": "0.3.0",
+    "description": "<p>Call this API endpoint if you want to get the availability for returning an order based on zip code and country. This method queries the server and returns a list of available pickup times that the customer can choose from.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Pickup place's long lived JWT</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": JWT\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "zip_code",
+            "description": "<p>The zip code of the region that you want to check</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"SE\"",
+              "\"DK\""
+            ],
+            "optional": false,
+            "field": "country",
+            "defaultValue": "SE",
+            "description": "<p>The country that the zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "UUID",
+            "optional": false,
+            "field": "place_id",
+            "description": "<p>Id of the pickup place from where the request originates</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "list_of_schedules",
+            "description": "<p>the preformatted available list of schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval",
+            "description": "<p>An object representing the pickup interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.start",
+            "description": "<p>Unix timestamp for the earliest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.end",
+            "description": "<p>Unix timestamp for the latest pickup possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.pickup_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be picked up from the specified place</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval",
+            "description": "<p>An object representing the dropoff interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.start",
+            "description": "<p>Unix timestamp for the earliest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Long",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.end",
+            "description": "<p>Unix timestamp for the latest dropoff possible time associated with the interval</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "list_of_schedules.dropoff_interval.formatted_as_schedule",
+            "description": "<p>the human readable delivery time window when the delivery can be dropped off to the retailer</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"list_of_schedules\":[\n      {\n         \"pickup_interval\":{\n            \"start\":\"1613750400\",\n            \"end\":\"1613768400\",\n            \"formatted_as_schedule\":\"(Imorgon) 17:00-22:00\",\n            \"interval_category\":\"return_interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"return_interval\",\n            \"start\":\"1613995200\",\n            \"end\":\"1614020400\",\n            \"formatted_as_schedule\":\"(2021-02-22) 13:00-20:00\"\n         },\n         \"extras\":{}\n      },\n      {\n         \"pickup_interval\":{\n            \"start\":\"1614009600\",\n            \"end\":\"1614027600\",\n            \"formatted_as_schedule\":\"(2021-02-22) 17:00-22:00\",\n            \"interval_category\":\"return_interval\"\n         },\n         \"dropoff_interval\":{\n            \"interval_category\":\"return_interval\",\n            \"start\":\"1614081600\",\n            \"end\":\"1614106800\",\n            \"formatted_as_schedule\":\"(2021-02-23) 13:00-20:00\"\n         },\n         \"extras\":{}\n      }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "(curl) Example usage:",
+        "content": "curl --header \"Authorization: <YOUR_JWT>\" -X GET 'https://staging-api.airmee.com/integration/delivery_intervals_for_zip_code_returns?zip_code=11428&country=SE&place_id=<YOUR_PLACE_ID>'",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The request does not contain all the needed parameters</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "optional": false,
+            "field": "DatabaseConnectionError",
+            "description": "<p>Failed to retrieve the schedule of the store</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ValidationError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid inputs supplied\",\n  \"extraMessage\": \"<Required Param> is required\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "DatabaseConnectionError",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"message\": \"Database connection error\",\n  \"extraMessage\": \"Failed to retrieve the schedule of the store\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./functions/availability/availability_by_zip_code_returns.js",
+    "groupTitle": "Returns"
+  }
+]
