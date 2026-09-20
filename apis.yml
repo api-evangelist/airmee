@@ -24,7 +24,7 @@ tags:
 - Parcel Lockers
 - Returns
 - E-Commerce
-- Same Day Delivery
+- Same-Day Delivery
 - Sweden
 - Carrier
 tags_raw:
@@ -38,6 +38,7 @@ tags_raw:
 - same-day-delivery
 - sweden
 - carrier
+- Same Day Delivery
 apis:
 - aid: airmee:airmee-integration-api
   name: Airmee Integration API
