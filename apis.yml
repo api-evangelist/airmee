@@ -40,45 +40,17 @@ tags_raw:
 - carrier
 - Same Day Delivery
 apis:
-- aid: airmee:airmee-integration-api
-  name: Airmee Integration API
-  description: The Airmee Integration API (apidoc version 0.3.0) — 12 operations for e-commerce and TA-system integrations
-    to quote delivery and return intervals for a zip code, check service-area availability and product size/weight
-    thresholds, list nearby collection points and parcel lockers, book home, collection-point and parcel-locker deliveries
-    and returns, and cancel a delivery before pickup. Authenticated with a long-lived JWT issued per pickup place.
+- aid: airmee:airmee-collection-point-deliveries-api
+  name: Airmee Collection Point Deliveries API
+  description: >-
+    The Collection Point Deliveries API from Airmee — 3 operation(s) for collection point deliveries.
   humanURL: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
   baseURL: https://api.airmee.com/integration
   tags:
-  - Home Deliveries
   - Collection Point Deliveries
-  - Parcel Locker Deliveries
-  - Returns
-  tags_raw:
-  - home-deliveries
-  - collection-point-deliveries
-  - parcel-locker-deliveries
-  - returns
-  x-evidence:
-    verified: '2026-09-19'
-    method: provider-published apidoc api_data.json converted to OpenAPI; documented routes probed live unauthenticated
-    docs_describe: 12 JWT-authenticated REST operations under /integration on staging-api.airmee.com (production omits the staging- prefix)
-    endpoint_check:
-    - url: https://api.airmee.com/integration/product_threshold_for_place?place_id=test
-      status: 401
-      body: '{"message":"Unauthorized"}'
-    - url: https://api.airmee.com/integration/delivery_intervals_for_zip_code?zip_code=11428&country=SE&place_id=test
-      status: 401
-      body: '{"message":"Unauthorized"}'
-    - url: https://api.airmee.com/integration/cancel_delivery
-      method: POST
-      status: 401
-      body: '{"message":"Unauthorized"}'
-    - url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_data.json
-      status: 200
-      note: apidoc 0.29.0 data file, 159,233 bytes, generator time 2022-11-02T08:33:57Z
   properties:
   - type: OpenAPI
-    url: openapi/airmee-integration-api-openapi.yml
+    url: openapi/airmee-collection-point-deliveries-api-openapi.yml
   - type: OpenAPISource
     url: openapi/airmee-apidoc-api-data.json
   - type: OpenAPISource
@@ -95,8 +67,91 @@ apis:
     url: errors/airmee-problem-types.yml
   - type: DataModel
     url: data-model/airmee-data-model.yml
-  - type: Overlay
-    url: overlays/airmee-integration-api-overlay.yaml
+  - type: Sandbox
+    url: sandbox/airmee-sandbox.yml
+- aid: airmee:airmee-home-deliveries-api
+  name: Airmee Home Deliveries API
+  description: The Home Deliveries API from Airmee — 6 operation(s) for home deliveries.
+  humanURL: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  baseURL: https://api.airmee.com/integration
+  tags:
+  - Home Deliveries
+  properties:
+  - type: OpenAPI
+    url: openapi/airmee-home-deliveries-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-data.json
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-project.json
+  - type: Documentation
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: APIReference
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: Authentication
+    url: authentication/airmee-authentication.yml
+  - type: Conventions
+    url: conventions/airmee-conventions.yml
+  - type: ErrorCatalog
+    url: errors/airmee-problem-types.yml
+  - type: DataModel
+    url: data-model/airmee-data-model.yml
+  - type: Sandbox
+    url: sandbox/airmee-sandbox.yml
+- aid: airmee:airmee-parcel-locker-deliveries-api
+  name: Airmee Parcel Locker Deliveries API
+  description: >-
+    The Parcel Locker Deliveries API from Airmee — 3 operation(s) for parcel locker deliveries.
+  humanURL: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  baseURL: https://api.airmee.com/integration
+  tags:
+  - Parcel Locker Deliveries
+  properties:
+  - type: OpenAPI
+    url: openapi/airmee-parcel-locker-deliveries-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-data.json
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-project.json
+  - type: Documentation
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: APIReference
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: Authentication
+    url: authentication/airmee-authentication.yml
+  - type: Conventions
+    url: conventions/airmee-conventions.yml
+  - type: ErrorCatalog
+    url: errors/airmee-problem-types.yml
+  - type: DataModel
+    url: data-model/airmee-data-model.yml
+  - type: Sandbox
+    url: sandbox/airmee-sandbox.yml
+- aid: airmee:airmee-returns-api
+  name: Airmee Returns API
+  description: The Returns API from Airmee — 2 operation(s) for returns.
+  humanURL: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  baseURL: https://api.airmee.com/integration
+  tags:
+  - Returns
+  properties:
+  - type: OpenAPI
+    url: openapi/airmee-returns-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-data.json
+  - type: OpenAPISource
+    url: openapi/airmee-apidoc-api-project.json
+  - type: Documentation
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: APIReference
+    url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
+  - type: Authentication
+    url: authentication/airmee-authentication.yml
+  - type: Conventions
+    url: conventions/airmee-conventions.yml
+  - type: ErrorCatalog
+    url: errors/airmee-problem-types.yml
+  - type: DataModel
+    url: data-model/airmee-data-model.yml
   - type: Sandbox
     url: sandbox/airmee-sandbox.yml
 common:

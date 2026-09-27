@@ -1,0 +1,24 @@
+{
+  "provider": "airmee",
+  "sources": [
+    "airmee-integration-api-openapi.yml"
+  ],
+  "outputs": [
+    "airmee-collection-point-deliveries-api-openapi.yml",
+    "airmee-home-deliveries-api-openapi.yml",
+    "airmee-parcel-locker-deliveries-api-openapi.yml",
+    "airmee-returns-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/airmee-integration-api-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [
+    "no openapi/_original/ archive: this run re-split PREVIOUSLY REFINED output, so any base URL it carries is inherited from an earlier pass rather than read from a document the provider published"
+  ],
+  "notes": [
+    "airmee-integration-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: written (+4 apis, 4 total)"
+  ],
+  "skipped": []
+}

@@ -1,0 +1,846 @@
+openapi: 3.2.0
+info:
+  title: Airmee Integration Parcel Locker Deliveries API
+  version: 0.3.0
+  description: The necessary endpoints for integrating into the Airmee ecosystem (same-day / next-day home delivery, collection-point and parcel-locker delivery, and label-less returns across Sweden).
+  contact:
+    name: Airmee
+    url: https://airmee.com/en/contact/
+  x-generated-from: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_data.json
+  x-generated-note: 'Provider-published apidoc JSON (api_data.json + api_project.json, generator time 2022-11-02T08:33:57Z) converted to OpenAPI 3.0.3 by API Evangelist on 2026-09-19; the source files are saved verbatim alongside this spec (airmee-apidoc-api-data.json, airmee-apidoc-api-project.json). Route existence confirmed live: GET https://api.airmee.com/integration/product_threshold_for_place?place_id=test returned HTTP 401 {"message":"Unauthorized"} on 2026-09-19.'
+servers:
+- url: https://api.airmee.com/integration
+  description: Production
+- url: https://staging-api.airmee.com/integration
+  description: Staging
+security:
+- jwtAuth: []
+tags:
+- name: Parcel Locker Deliveries
+paths:
+  /request_delivery:
+    post:
+      operationId: requestDelivery
+      summary: Request new delivery (home, collection point or parcel locker)
+      description: Call this API endpoint to request a new collection point delivery from Airmee. Call this API endpoint to request a new delivery from Airmee. Call this API endpoint to request a new parcel locker delivery from Airmee.
+      tags:
+      - Parcel Locker Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                place_id:
+                  type: string
+                  format: uuid
+                  description: Id of the place that is issuing the request
+                recipient:
+                  type: object
+                  description: The object containing the information of the order's recipient
+                  properties:
+                    name:
+                      type: string
+                      description: The full name of the customer / party that is the recipient of the delivery
+                    phone_number:
+                      type: integer
+                      format: int64
+                      description: The national phone number of the recipient that can be used by the courier for obtaining extra information
+                    phone_number_country_code:
+                      type: integer
+                      description: The country code for the phone number
+                    email:
+                      type: string
+                      description: The email address of the recipient
+                  required:
+                  - name
+                  - phone_number
+                  - phone_number_country_code
+                ecomm_id:
+                  type: string
+                  description: The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems
+                dropoff_address:
+                  type: object
+                  description: The object containing the delivery address information
+                  properties:
+                    street_and_number:
+                      type: string
+                      description: The name of the street and the number of the building
+                    city:
+                      type: string
+                      description: The name of the delivery city
+                    zip_code:
+                      type: string
+                      description: The zip code for the address within the city
+                    country:
+                      type: string
+                      description: The name of the delivery country
+                    apartment:
+                      type: string
+                      description: The apartment number (LGH) of the address
+                    floor:
+                      type: string
+                      description: The floor number of the address
+                    door_code:
+                      type: string
+                      description: The door code for entering the building
+                    latitude:
+                      type: string
+                      description: The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)
+                    longitude:
+                      type: string
+                      description: The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)
+                  required:
+                  - street_and_number
+                  - city
+                  - zip_code
+                  - country
+                message_to_courier:
+                  type: string
+                  description: Any extra information useful to the courier (e.g., apartment number, door code, etc.) or the retailer decides it is important for the courier to be aware of (e.g., call before delivering)
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      length:
+                        type: number
+                        format: double
+                        description: The length of the item in centimeters
+                      width:
+                        type: number
+                        format: double
+                        description: The width of the item in centimeters
+                      height:
+                        type: number
+                        format: double
+                        description: The height of the item in centimeters
+                      weight:
+                        type: number
+                        format: double
+                        description: The weight of the item in grams
+                      volume:
+                        type: number
+                        format: double
+                        description: The volume of the item in m3
+                      name:
+                        type: string
+                        description: The name of the item
+                      parcel_id:
+                        type: string
+                        description: The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally
+                      unit_price:
+                        type: object
+                        description: An object representing the unit price of the item
+                        properties:
+                          amount:
+                            type: integer
+                            description: The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)
+                          currency:
+                            type: string
+                            description: The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)
+                      quantity:
+                        type: integer
+                        description: The number of units of the item that are sent in the order
+                    required:
+                    - parcel_id
+                  description: An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be delivered
+                pickup_interval:
+                  type: object
+                  description: Object representing the allocated time interval for pickups
+                  properties:
+                    start:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the earliest pickup time as obtained from the Delivery intervals for checkout query
+                    end:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the latest pickup time as obtained from the Delivery intervals for checkout query
+                  required:
+                  - start
+                  - end
+                dropoff_interval:
+                  type: object
+                  description: Object representing the allocated time interval for dropoffs
+                  properties:
+                    start:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the earliest dropoff time as obtained from the Delivery intervals for checkout query
+                    end:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the latest dropoff time as obtained from the Delivery intervals for checkout query
+                  required:
+                  - start
+                  - end
+                checks:
+                  type: object
+                  description: Object representing the requested check for the delivery
+                  properties:
+                    min_age:
+                      type: integer
+                      description: Specifies the minimum age that the recipient needs to have for the package to be handed over. Omit if not required, value will be set based on account settings
+                    verify_id:
+                      type: boolean
+                      description: If true, the courier will verify the customer id. Omit if false, value will be set based on account settings
+                    take_signature:
+                      type: boolean
+                      description: If true, the courier will ask the customer to sign for the delivery. Omit if false, value will be set based on account settings
+                extras:
+                  type: object
+                  description: Object representing extra functionality that Airmee supports
+                  properties:
+                    can_leave_outside_door:
+                      type: boolean
+                      description: If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings
+                    senderReference:
+                      type: string
+                      description: Retailer's original reference for the order
+                other_info:
+                  type: object
+                  description: Optional field for customer-specific custom attributes. Data sent as JSON
+                collection_point_delivery:
+                  type: object
+                  description: The object representing collection point order.
+                  properties:
+                    collection_point_id:
+                      type: string
+                      description: Collection point id.
+                  required:
+                  - collection_point_id
+              required:
+              - place_id
+              - recipient
+              - ecomm_id
+              - dropoff_address
+              - items
+              - pickup_interval
+              - dropoff_interval
+              - collection_point_delivery
+            examples:
+              collection-point-deliveries-curl-example-usage-collection-point-delivery:
+                summary: '(curl) Example usage: Collection point delivery (Collection Point Deliveries)'
+                value:
+                  place_id: <YOUR_PLACE_ID>
+                  recipient:
+                    name: Erik johansson
+                    phone_number: 767000000
+                    phone_number_country_code: 46
+                    email: user@email.com
+                  ecomm_id: '123456789'
+                  dropoff_address:
+                    street_and_number: Vasagatan 11
+                    city: Stockholm
+                    zip_code: '11120'
+                    country: Sweden
+                  dropoff_message_to_courier: Any specific message that could help the courier.
+                  items:
+                  - parcel_id: 123456789-1
+                    length: 10
+                    width: 10
+                    height: 10
+                    weight: 100
+                    volume: 0.001
+                  - parcel_id: 123456789-2
+                    length: 20
+                    width: 20
+                    height: 20
+                    weight: 2000
+                    volume: 0.008
+                  pickup_interval:
+                    start: 1613631600
+                    end: 1613646000
+                  dropoff_interval:
+                    start: 1613664000
+                    end: 1613682000
+                  extras:
+                    senderReference: 012345678
+                  collection_point_delivery:
+                    collection_point_id: 7d93f748-c45c-11eb-9d9f-b3ea84739a93
+              home-deliveries-curl-example-usage-regular-delivery:
+                summary: '(curl) Example usage: Regular delivery (Home Deliveries)'
+                value:
+                  place_id: <YOUR_PLACE_ID>
+                  recipient:
+                    name: Erik johansson
+                    phone_number: 767000000
+                    phone_number_country_code: 46
+                    email: user@email.com
+                  ecomm_id: '123456789'
+                  dropoff_address:
+                    street_and_number: Vasagatan 11
+                    city: Stockholm
+                    zip_code: '11120'
+                    country: Sweden
+                  dropoff_message_to_courier: Any specific message that could help the courier.
+                  items:
+                  - parcel_id: 123456789-1
+                    length: 10
+                    width: 10
+                    height: 10
+                    weight: 100
+                    volume: 0.001
+                  - parcel_id: 123456789-2
+                    length: 20
+                    width: 20
+                    height: 20
+                    weight: 2000
+                    volume: 0.008
+                  pickup_interval:
+                    start: 1613631600
+                    end: 1613646000
+                  dropoff_interval:
+                    start: 1613664000
+                    end: 1613682000
+                  extras:
+                    senderReference: 012345678
+              parcel-locker-deliveries-curl-example-usage-parcel-locker-delivery:
+                summary: '(curl) Example usage: Parcel locker delivery (Parcel Locker Deliveries)'
+                value:
+                  place_id: <YOUR_PLACE_ID>
+                  recipient:
+                    name: Erik johansson
+                    phone_number: 767000000
+                    phone_number_country_code: 46
+                    email: user@email.com
+                  ecomm_id: '123456789'
+                  dropoff_address:
+                    street_and_number: Vasagatan 11
+                    city: Stockholm
+                    zip_code: '11120'
+                    country: Sweden
+                  dropoff_message_to_courier: Any specific message that could help the courier.
+                  items:
+                  - parcel_id: 123456789-1
+                    length: 10
+                    width: 10
+                    height: 10
+                    weight: 100
+                    volume: 0.001
+                  - parcel_id: 123456789-2
+                    length: 20
+                    width: 20
+                    height: 20
+                    weight: 2000
+                    volume: 0.008
+                  pickup_interval:
+                    start: 1613631600
+                    end: 1613646000
+                  dropoff_interval:
+                    start: 1613664000
+                    end: 1613682000
+                  extras:
+                    senderReference: 012345678
+                  parcel_locker_delivery:
+                    locker_location_id: 21aea180-eaef-11eb-8a2e-4b348ff31b02
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    type: object
+                    description: the object representation of the inserted order details
+                    properties:
+                      order_id:
+                        type: string
+                        format: uuid
+                        description: the unique Airmee identifier for the inserted order
+                      tracking_url:
+                        type: string
+                        description: the tracking id for the order to be pre-fixed with "http://tracking-staging.airmee.com/#/track/" to complete the url for the tracking page of the order
+                      message:
+                        type: string
+                        description: reason why order was booked as regular delivery when locker delivery was requested because either locker id was incorrect or specified locker wasn't available.
+                    required:
+                    - order_id
+                    - tracking_url
+                required:
+                - order
+              example:
+                order:
+                  order_id: 69a84ba0-089d-11e7-b1a6-1f29a6237061
+                  tracking_url: 30E862
+        '400':
+          description: 'ValidationError: The request does not contain all the needed parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ValidationError:
+                  summary: The request does not contain all the needed parameters
+                  value:
+                    message: Invalid inputs supplied
+                    extraMessage: <Required Param> is required
+        '401':
+          description: 'Unauthorized — the Authorization header is missing or the JWT is not valid (observed live on api.airmee.com 2026-09-19: `{"message":"Unauthorized"}`)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'NotFoundError: The store id does not exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotFoundError:
+                  summary: The store id does not exist
+                  value:
+                    message: Store does not exist.
+                    extraMessage: The store id does not exist
+        '412':
+          description: 'GeocodeError: Failed to geocode the address'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GeocodeError:
+                  summary: Failed to geocode the address
+                  value:
+                    message: Geocoding error
+                    extraMessage: 'Address could not be found: <address>'
+        '500':
+          description: 'DatabaseConnectionError: Fail to insert order to database'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                DatabaseConnectionError:
+                  summary: Fail to insert order to database
+                  value:
+                    message: Database connection error
+                    extraMessage: Please contact support if this persists
+      x-apidoc-variants:
+      - group: Collection_point_deliveries
+        name: request_delivery
+        title: 1. Request new collection point delivery
+        version: 0.3.0
+        url: /request_delivery
+      - group: Home_deliveries
+        name: request_delivery
+        title: 1. Request new delivery
+        version: 0.3.0
+        url: /request_delivery
+      - group: Parcel_locker_deliveries
+        name: request_delivery
+        title: 1. Request new parcel locker delivery
+        version: 0.3.0
+        url: /request_delivery
+  /get_parcel_lockers_for_zip_code:
+    get:
+      operationId: getParcelLockersForZipCode
+      summary: Parcel locker delivery intervals
+      description: Call this API endpoint if you want to get the details and availability of parcel locker based on zip code and country up to a given limit. This method queries the server and returns a list of available delivery times. This endpoint is mainly used by TA-systems to validate that the selected delivery time by the customer is still available prior to invoking a booking request.
+      tags:
+      - Parcel Locker Deliveries
+      parameters:
+      - name: zip_code
+        in: query
+        required: true
+        description: The zip code of the region that you want to check
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: true
+        description: The country code that zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: The number of closest parcel lockers to retrieve
+        schema:
+          type: integer
+      - name: place_id
+        in: query
+        required: true
+        description: Id of the pickup place from where the request originates
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list_of_parcel_lockers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the locker
+                        address_details:
+                          type: object
+                          description: An object representing the address of parcel locker
+                          properties:
+                            street_and_number:
+                              type: string
+                              description: Street name and street number of the parcel locker
+                            city:
+                              type: string
+                              description: City of the parcel locker
+                            country:
+                              type: string
+                              description: Country of the parcel locker
+                            zip_code:
+                              type: string
+                              description: Zip code of the parcel locker
+                            country_code:
+                              type: string
+                              description: ISO country code of the parcel locker
+                            coordinates:
+                              type: object
+                              description: An object representing coordinates of the parcel locker
+                              properties:
+                                latitude:
+                                  type: number
+                                  format: double
+                                  description: Latitude of parcel locker
+                                longitude:
+                                  type: number
+                                  format: double
+                                  description: Longitude of parcel locker
+                              required:
+                              - latitude
+                              - longitude
+                          required:
+                          - street_and_number
+                          - city
+                          - country
+                          - zip_code
+                          - country_code
+                          - coordinates
+                        distance:
+                          type: integer
+                          description: Approx. distance from the parcel locker
+                        operating_hours:
+                          type: object
+                          description: An object representing the parcel locker operating hours
+                          properties:
+                            day_of_week:
+                              type: integer
+                              description: Number representation for day of week
+                            open_all_day:
+                              type: string
+                              description: Boolean representation if locker is open or closed. If true, then open else closed
+                          required:
+                          - day_of_week
+                          - open_all_day
+                        pickup_interval:
+                          type: object
+                          description: An object representing the pickup interval
+                          properties:
+                            start:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the earliest pickup possible time associated with the interval
+                            end:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the latest pickup possible time associated with the interval
+                            formatted_as_schedule:
+                              type: string
+                              description: the human readable delivery time window when the delivery can be picked up from the specified place
+                          required:
+                          - start
+                          - end
+                          - formatted_as_schedule
+                        dropoff_interval:
+                          type: object
+                          description: An object representing the dropoff interval
+                          properties:
+                            start:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the earliest dropoff possible time associated with the interval
+                            end:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the latest dropoff possible time associated with the interval
+                            formatted_as_schedule:
+                              type: string
+                              description: the human readable delivery time window when the delivery can be dropped off to the recipient
+                            eta:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the ETA associated with the interval
+                            eta_formatted:
+                              type: string
+                              description: the human readable delivery ETA when the delivery can be dropped off to the recipient
+                          required:
+                          - start
+                          - end
+                          - formatted_as_schedule
+                          - eta
+                          - eta_formatted
+                        extras:
+                          type: object
+                          description: An object containing extra information about the delivery interval
+                      required:
+                      - name
+                      - address_details
+                      - distance
+                      - operating_hours
+                      - pickup_interval
+                      - dropoff_interval
+                      - extras
+                    description: the preformatted available list of parcel locker schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)
+                required:
+                - list_of_parcel_lockers
+        '400':
+          description: 'ValidationError: The request does not contain all the needed parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ValidationError:
+                  summary: The request does not contain all the needed parameters
+                  value:
+                    message: Invalid inputs supplied
+                    extraMessage: <Required Param> is required
+        '401':
+          description: 'Unauthorized — the Authorization header is missing or the JWT is not valid (observed live on api.airmee.com 2026-09-19: `{"message":"Unauthorized"}`)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'DatabaseConnectionError: Fail to retrieve the parcel lockers for the zip code'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                DatabaseConnectionError:
+                  summary: Fail to retrieve the parcel lockers for the zip code
+                  value:
+                    message: Database connection error
+                    extraMessage: Fail to retrieve the parcel lockers for the zip code
+      x-apidoc:
+        group: Parcel_locker_deliveries
+        name: get_parcel_lockers_for_zip_code
+        title: 2. Parcel locker delivery intervals
+        version: 0.3.0
+        url: /get_parcel_lockers_for_zip_code/:zip_code&:country&:place_id&:limit
+  /get_parcel_locker_details:
+    get:
+      operationId: parcelLockerDetails
+      summary: Parcel locker details
+      description: Call this API endpoint if you want to get the details of a parcel locker by passing parcel locker id(s). This method queries the server and returns a list of parcel lockers with details like name, address, coordinates and operating hours.
+      tags:
+      - Parcel Locker Deliveries
+      parameters:
+      - name: parcel_locker_ids
+        in: query
+        required: true
+        description: The parcel locker id(s)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parcel_locker_details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the parcel locker
+                        address_details:
+                          type: object
+                          description: An object representing the address of parcel locker
+                          properties:
+                            street_and_number:
+                              type: string
+                              description: Street name and street number of the parcel locker
+                            city:
+                              type: string
+                              description: City of the parcel locker
+                            country:
+                              type: string
+                              description: Country of the parcel locker
+                            zip_code:
+                              type: string
+                              description: Zip code of the parcel locker
+                            country_code:
+                              type: string
+                              description: ISO country code of the parcel locker
+                            coordinates:
+                              type: object
+                              description: An object representing coordinates of the parcel locker
+                              properties:
+                                latitude:
+                                  type: number
+                                  format: double
+                                  description: Latitude of parcel locker
+                                longitude:
+                                  type: number
+                                  format: double
+                                  description: Longitude of parcel locker
+                              required:
+                              - latitude
+                              - longitude
+                          required:
+                          - street_and_number
+                          - city
+                          - country
+                          - zip_code
+                          - country_code
+                          - coordinates
+                        operating_hours:
+                          type: object
+                          description: An object representing the parcel locker operating hours
+                          properties:
+                            day_of_week:
+                              type: integer
+                              description: Number representation for day of week
+                            open_all_day:
+                              type: string
+                              description: Boolean representation if locker is open or closed. If true, then open else closed
+                          required:
+                          - day_of_week
+                          - open_all_day
+                      required:
+                      - name
+                      - address_details
+                      - operating_hours
+                    description: the preformatted details of a locker for the given locker id or list of locker ids as a JSON Array (see below for object attributes)
+                required:
+                - parcel_locker_details
+              example:
+                parcel_locker_details:
+                - id: locker_id_1
+                  name: locker_name_1
+                  operating_hours:
+                  - day_of_week: 0
+                    open_all_day: true
+                  - day_of_week: 1
+                    open_all_day: true
+                  - day_of_week: 2
+                    open_all_day: true
+                  - day_of_week: 3
+                    open_all_day: true
+                  - day_of_week: 4
+                    open_all_day: true
+                  - day_of_week: 5
+                    open_all_day: true
+                  - day_of_week: 6
+                    open_all_day: true
+                  address_details:
+                    street_and_number: street_and_number 1
+                    city: Stockholm
+                    zip_code: '11359'
+                    country_code: SE
+                    country: Sweden
+                    coordinates:
+                      latitude: 59.339963
+                      longitude: 18.060152
+                - id: locker_id_2
+                  name: locker_name_2
+                  operating_hours:
+                  - day_of_week: 0
+                    open_all_day: true
+                  - day_of_week: 1
+                    open_all_day: true
+                  - day_of_week: 2
+                    open_all_day: true
+                  - day_of_week: 3
+                    open_all_day: true
+                  - day_of_week: 4
+                    open_all_day: true
+                  - day_of_week: 5
+                    open_all_day: true
+                  - day_of_week: 6
+                    open_all_day: true
+                  address_details:
+                    street_and_number: street_and_number 2
+                    city: Stockholm
+                    zip_code: '11120'
+                    country_code: SE
+                    country: Sweden
+                    coordinates:
+                      latitude: 59.339983
+                      longitude: 18.060252
+        '400':
+          description: 'ValidationError: The request does not contain all the needed parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ValidationError:
+                  summary: The request does not contain all the needed parameters
+                  value:
+                    message: Invalid inputs supplied
+                    extraMessage: <Required Param> is required
+        '401':
+          description: 'Unauthorized — the Authorization header is missing or the JWT is not valid (observed live on api.airmee.com 2026-09-19: `{"message":"Unauthorized"}`)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'DatabaseConnectionError: Fail to retrieve the parcel locker data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                DatabaseConnectionError:
+                  summary: Fail to retrieve the parcel locker data
+                  value:
+                    message: Database connection error
+                    extraMessage: Fail to retrieve the parcel locker data
+      x-apidoc:
+        group: Parcel_locker_deliveries
+        name: parcel_locker_details
+        title: 3. Parcel locker details
+        version: 0.3.0
+        url: /get_parcel_locker_details/:parcel_locker_ids
+components:
+  schemas:
+    Error:
+      type: object
+      description: Error envelope returned on 4xx/5xx responses.
+      properties:
+        message:
+          type: string
+          description: Short error message
+        extraMessage:
+          type: string
+          description: Additional detail on the failure
+      required:
+      - message
+  securitySchemes:
+    jwtAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Pickup place's long-lived JWT issued by Airmee, sent as the raw value of the Authorization header (the published curl examples use `Authorization:<YOUR_JWT>` with no scheme prefix).
+externalDocs:
+  description: Airmee Integration API documentation (apidoc site)
+  url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/

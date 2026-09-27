@@ -1,0 +1,489 @@
+openapi: 3.2.0
+info:
+  title: Airmee Integration Returns API
+  version: 0.3.0
+  description: The necessary endpoints for integrating into the Airmee ecosystem (same-day / next-day home delivery, collection-point and parcel-locker delivery, and label-less returns across Sweden).
+  contact:
+    name: Airmee
+    url: https://airmee.com/en/contact/
+  x-generated-from: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/api_data.json
+  x-generated-note: 'Provider-published apidoc JSON (api_data.json + api_project.json, generator time 2022-11-02T08:33:57Z) converted to OpenAPI 3.0.3 by API Evangelist on 2026-09-19; the source files are saved verbatim alongside this spec (airmee-apidoc-api-data.json, airmee-apidoc-api-project.json). Route existence confirmed live: GET https://api.airmee.com/integration/product_threshold_for_place?place_id=test returned HTTP 401 {"message":"Unauthorized"} on 2026-09-19.'
+servers:
+- url: https://api.airmee.com/integration
+  description: Production
+- url: https://staging-api.airmee.com/integration
+  description: Staging
+security:
+- jwtAuth: []
+tags:
+- name: Returns
+paths:
+  /request_return:
+    post:
+      operationId: requestReturn
+      summary: Request new return
+      description: Call this API endpoint to request a new return delivery from Airmee.
+      tags:
+      - Returns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                place_id:
+                  type: string
+                  format: uuid
+                  description: Id of the place that is the receiver of the request
+                customer:
+                  type: object
+                  description: The object containing the information about the customer ordering the pickup
+                  properties:
+                    name:
+                      type: string
+                      description: The fullname of the customer
+                    phone_number:
+                      type: integer
+                      format: int64
+                      description: The national phone number of the customer that can be used by the courier for obtaining extra information
+                    phone_number_country_code:
+                      type: integer
+                      description: The country code for the phone number
+                    email:
+                      type: string
+                      description: The email address of the customer
+                  required:
+                  - name
+                  - phone_number
+                  - phone_number_country_code
+                ecomm_id:
+                  type: string
+                  description: The unique identifier associated to the current order in the ecommerce system. This usually coincide with the shipment ID (sändnings-ID) of various TA systems
+                pickup_address:
+                  type: object
+                  description: The object containing the pickup address information
+                  properties:
+                    street_and_number:
+                      type: string
+                      description: The name of the street and the number of the building
+                    city:
+                      type: string
+                      description: The name of the delivery city
+                    zip_code:
+                      type: string
+                      description: The zip code for the address within the city
+                    country:
+                      type: string
+                      description: The name of the delivery country
+                    apartment:
+                      type: string
+                      description: The apartment number (LGH) of the address
+                    floor:
+                      type: string
+                      description: The floor number of the address
+                    door_code:
+                      type: string
+                      description: The door code for entering the building
+                    latitude:
+                      type: string
+                      description: The latitude of the address (in case the geocoding is performed internally or the address cannot be parsed)
+                    longitude:
+                      type: string
+                      description: The longitude of the address (in case the geocoding is performed internally or the address cannot be parsed)
+                  required:
+                  - street_and_number
+                  - city
+                  - zip_code
+                  - country
+                pickup_message_to_courier:
+                  type: string
+                  description: Any extra information useful to the courier (e.g., apartment number, door code, etc.)
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      length:
+                        type: number
+                        format: double
+                        description: The length of the item in centimeters
+                      width:
+                        type: number
+                        format: double
+                        description: The width of the item in centimeters
+                      height:
+                        type: number
+                        format: double
+                        description: The height of the item in centimeters
+                      weight:
+                        type: number
+                        format: double
+                        description: The weight of the item in grams
+                      volume:
+                        type: number
+                        format: double
+                        description: The volume of the item in m3
+                      name:
+                        type: string
+                        description: The name of the item
+                      parcel_id:
+                        type: string
+                        description: The parcel id of the item (in case there are many parcels belonging to the same delivery). This usually coincide with the parcel ID (kolli-ID) of various TA systems. This field is mandatory when you print out labels internally
+                      unit_price:
+                        type: object
+                        description: An object representing the unit price of the item
+                        properties:
+                          amount:
+                            type: integer
+                            description: The amount of currency needed to purchase the item at a stock price (without discounts, special rates, etc.) in the smallest currency unit (e.g., öre for SEK)
+                          currency:
+                            type: string
+                            description: The currency of the unit price based on the ISO 4217 standard (https://en.wikipedia.org/wiki/ISO_4217)
+                      quantity:
+                        type: integer
+                        description: The number of units of the item that are sent in the order
+                    required:
+                    - length
+                    - width
+                    - height
+                    - weight
+                    - volume
+                    - parcel_id
+                  description: An array of objects containing information on the items to be delivered. It's required that the number of items reflects the number of parcels to be picked up
+                pickup_interval:
+                  type: object
+                  description: Object representing the allocated time interval for pickups
+                  properties:
+                    start:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the earliest pickup time as obtained from the Return intervals query
+                    end:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the latest pickup time as obtained from the Return intervals query
+                  required:
+                  - start
+                  - end
+                dropoff_interval:
+                  type: object
+                  description: Object representing the allocated time interval for dropoffs
+                  properties:
+                    start:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the earliest dropoff time as obtained from the Return intervals query
+                    end:
+                      type: integer
+                      format: int64
+                      description: Unix timestamp for the latest dropoff time as obtained from the Return intervals query
+                  required:
+                  - start
+                  - end
+                extras:
+                  type: object
+                  description: Object representing extra functionality that Airmee supports
+                  properties:
+                    can_pickup_from_outside_door:
+                      type: boolean
+                      description: If true, the customer will be allowed (in the tracking page) to request the package to be left in front of the door. Omit if false, value will be set based on account settings
+              required:
+              - place_id
+              - customer
+              - ecomm_id
+              - pickup_address
+              - items
+              - pickup_interval
+              - dropoff_interval
+            examples:
+              returns-curl-example-usage:
+                summary: '(curl) Example usage: (Returns)'
+                value:
+                  place_id: <YOUR_PLACE_ID>
+                  customer:
+                    name: Erik johansson
+                    phone_number: 767000000
+                    phone_number_country_code: 46
+                    email: user@nomail.com
+                  ecomm_id: '123456789'
+                  pickup_address:
+                    street_and_number: Vagatan 11
+                    city: Stockholm
+                    zip_code: '11120'
+                    country: Sweden
+                  pickup_message_to_courier: Any specific message that could help the courier.
+                  items:
+                  - parcel_id: 123456789-1
+                    length: 10
+                    width: 10
+                    height: 10
+                    weight: 100
+                    volume: 0.001
+                  - parcel_id: 123456789-2
+                    length: 20
+                    width: 20
+                    height: 20
+                    weight: 2000
+                    volume: 0.008
+                  pickup_interval:
+                    start: 1613750400
+                    end: 1613768400
+                  dropoff_interval:
+                    start: 1613995200
+                    end: 1614020400
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    type: object
+                    description: the object representation of the inserted order return details
+                    properties:
+                      order_id:
+                        type: string
+                        format: uuid
+                        description: the unique Airmee identifier for the inserted order return
+                      tracking_url:
+                        type: string
+                        description: the tracking id for the order to be pre-fixed with "http://tracking-staging.airmee.com/#/track/" to complete the url for the tracking page of the order
+                    required:
+                    - order_id
+                    - tracking_url
+                required:
+                - order
+              example:
+                order:
+                  order_id: 69a84ba0-089d-11e7-b1a6-1f29a6237061
+                  tracking_url: 30E862
+        '400':
+          description: 'ValidationError: The request does not contain all the needed parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ValidationError:
+                  summary: The request does not contain all the needed parameters
+                  value:
+                    message: Invalid inputs supplied
+                    extraMessage: <Required Param> is required
+        '401':
+          description: 'Unauthorized — the Authorization header is missing or the JWT is not valid (observed live on api.airmee.com 2026-09-19: `{"message":"Unauthorized"}`)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'NotFoundError: The store id does not exist'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                NotFoundError:
+                  summary: The store id does not exist
+                  value:
+                    message: Store does not exist.
+                    extraMessage: The store id does not exist
+        '412':
+          description: 'GeocodeError: Failed to geocode the address'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GeocodeError:
+                  summary: Failed to geocode the address
+                  value:
+                    message: Geocoding error
+                    extraMessage: 'Address could not be found: <address>'
+        '500':
+          description: 'DatabaseConnectionError: Fail to insert order to database'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                DatabaseConnectionError:
+                  summary: Fail to insert order to database
+                  value:
+                    message: Database connection error
+                    extraMessage: Please contact support if this persists
+      x-apidoc:
+        group: Returns
+        name: request_return
+        title: 1. Request new return
+        version: 0.3.0
+        url: /request_return
+  /delivery_intervals_for_zip_code_returns:
+    get:
+      operationId: returnIntervals
+      summary: Return intervals
+      description: Call this API endpoint if you want to get the availability for returning an order based on zip code and country. This method queries the server and returns a list of available pickup times that the customer can choose from.
+      tags:
+      - Returns
+      parameters:
+      - name: zip_code
+        in: query
+        required: true
+        description: The zip code of the region that you want to check
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: true
+        description: The country that the zip code belongs to, as declared via the ISO Alpha-2 Code - https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+        schema:
+          type: string
+      - name: place_id
+        in: query
+        required: true
+        description: Id of the pickup place from where the request originates
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list_of_schedules:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pickup_interval:
+                          type: object
+                          description: An object representing the pickup interval
+                          properties:
+                            start:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the earliest pickup possible time associated with the interval
+                            end:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the latest pickup possible time associated with the interval
+                            formatted_as_schedule:
+                              type: string
+                              description: the human readable delivery time window when the delivery can be picked up from the specified place
+                          required:
+                          - start
+                          - end
+                          - formatted_as_schedule
+                        dropoff_interval:
+                          type: object
+                          description: An object representing the dropoff interval
+                          properties:
+                            start:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the earliest dropoff possible time associated with the interval
+                            end:
+                              type: integer
+                              format: int64
+                              description: Unix timestamp for the latest dropoff possible time associated with the interval
+                            formatted_as_schedule:
+                              type: string
+                              description: the human readable delivery time window when the delivery can be dropped off to the retailer
+                          required:
+                          - start
+                          - end
+                          - formatted_as_schedule
+                      required:
+                      - pickup_interval
+                      - dropoff_interval
+                    description: the preformatted available list of schedules for the given place id and zip code pairs as a JSON Array (see below for object attributes)
+                required:
+                - list_of_schedules
+              example:
+                list_of_schedules:
+                - pickup_interval:
+                    start: '1613750400'
+                    end: '1613768400'
+                    formatted_as_schedule: (Imorgon) 17:00-22:00
+                    interval_category: return_interval
+                  dropoff_interval:
+                    interval_category: return_interval
+                    start: '1613995200'
+                    end: '1614020400'
+                    formatted_as_schedule: (2021-02-22) 13:00-20:00
+                  extras: {}
+                - pickup_interval:
+                    start: '1614009600'
+                    end: '1614027600'
+                    formatted_as_schedule: (2021-02-22) 17:00-22:00
+                    interval_category: return_interval
+                  dropoff_interval:
+                    interval_category: return_interval
+                    start: '1614081600'
+                    end: '1614106800'
+                    formatted_as_schedule: (2021-02-23) 13:00-20:00
+                  extras: {}
+        '400':
+          description: 'ValidationError: The request does not contain all the needed parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ValidationError:
+                  summary: The request does not contain all the needed parameters
+                  value:
+                    message: Invalid inputs supplied
+                    extraMessage: <Required Param> is required
+        '401':
+          description: 'Unauthorized — the Authorization header is missing or the JWT is not valid (observed live on api.airmee.com 2026-09-19: `{"message":"Unauthorized"}`)'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'DatabaseConnectionError: Failed to retrieve the schedule of the store'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                DatabaseConnectionError:
+                  summary: Failed to retrieve the schedule of the store
+                  value:
+                    message: Database connection error
+                    extraMessage: Failed to retrieve the schedule of the store
+      x-apidoc:
+        group: Returns
+        name: return_intervals
+        title: 2. Return intervals
+        version: 0.3.0
+        url: /delivery_intervals_for_zip_code_returns/:zip_code&:country&:place_id
+components:
+  schemas:
+    Error:
+      type: object
+      description: Error envelope returned on 4xx/5xx responses.
+      properties:
+        message:
+          type: string
+          description: Short error message
+        extraMessage:
+          type: string
+          description: Additional detail on the failure
+      required:
+      - message
+  securitySchemes:
+    jwtAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Pickup place's long-lived JWT issued by Airmee, sent as the raw value of the Authorization header (the published curl examples use `Authorization:<YOUR_JWT>` with no scheme prefix).
+externalDocs:
+  description: Airmee Integration API documentation (apidoc site)
+  url: http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/
