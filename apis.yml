@@ -155,6 +155,9 @@ apis:
   - type: Sandbox
     url: sandbox/airmee-sandbox.yml
 common:
+- type: CapabilityMap
+  url: capabilities/airmee-capability-edges.yml
+  name: Airmee Business Capability Map
 - type: Website
   url: https://airmee.com/
 - type: Documentation

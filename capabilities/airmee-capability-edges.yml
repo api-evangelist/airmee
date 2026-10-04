@@ -1,0 +1,47 @@
+slug: airmee
+provider: Airmee
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Home Deliveries
+  spec_file: airmee-home-deliveries-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.8
+  evidence: POST /cancel_delivery  cancelDelivery  Cancel a delivery; GET /service_area_availability_for_zip_code  serviceAreaAvailability  Service
+    area availabilty
+  reason: Requesting and cancelling home deliveries, checking delivery intervals, dimension/weight thresholds
+    and service-area coverage are transport/last-mile execution operations, i.e. Logistics Operations
+    Management.
+- tag: Collection Point Deliveries
+  spec_file: airmee-collection-point-deliveries-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.78
+  evidence: POST /request_delivery  requestDelivery  Request new delivery (home, collection point or parcel
+    locker)
+  reason: Booking parcel-locker/collection-point deliveries and retrieving collection point details and
+    delivery intervals is last-mile transport execution — Logistics Operations Management.
+- tag: Parcel Locker Deliveries
+  spec_file: airmee-parcel-locker-deliveries-api-openapi.yml
+  capability_id: BC-520.50
+  capability_id_l1: BC-520
+  capability_name: Logistics Operations Management
+  confidence: 0.75
+  evidence: POST /request_delivery — 'Request new delivery (home, collection point or parcel locker)';
+    GET 'Parcel locker delivery intervals'
+  reason: Operations book last-mile delivery jobs and look up parcel-locker drop points/time windows —
+    transport execution within the supply chain, i.e. logistics operations. Not a payment, CRM or product
+    capability despite the consumer-facing noun.
