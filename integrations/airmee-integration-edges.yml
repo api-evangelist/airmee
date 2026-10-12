@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/airmee/integrations
+- https://n8n.io/integrations/airmee/
+- https://composio.dev/toolkits/airmee
+- https://monid.ai/tools/airmee
+checked:
+- https://composio.dev/toolkits/airmee
+- https://monid.ai/tools/airmee
+- https://n8n.io/integrations/airmee/
+- https://zapier.com/apps/airmee/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
