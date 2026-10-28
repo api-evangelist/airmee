@@ -64,5 +64,116 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Airmee is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/airmee
+Airmee is a Stockholm-based last-mile delivery company (founded 2018 by Julian Lee and Adrian Prelipcean) that runs same-day and next-day home delivery, outdoor parcel-locker delivery and label-less returns for e-commerce retailers across Sweden — Amazon, Apotea, Adlibris, Acne Studios, Sellpy and Meds among them — on a proprietary Smart Logistics Platform that route-optimises deliveries in real time and reports 99%+ fossil-free transport. Retailers and transport-administration (TA) systems integrate through the Airmee Integration API on api.airmee.com, a JWT-authenticated REST surface that quotes delivery intervals for a zip code at checkout, checks service-area availability and parcel size thresholds, lists nearby collection points and parcel lockers, books home / locker / collection-point deliveries and returns, and cancels a booking before pickup. A first-party PHP SDK and Magento 2 module are on Packagist, and partner-built WooCommerce and Shopify connectors exist.
+
+**Areas:** Logistics · Last Mile Delivery · Shipping · Parcel Delivery · Parcel Lockers · Returns · E-Commerce · Same-Day Delivery · Sweden · Carrier
+
+## Airmee on APIs.io
+
+Everything profiled for Airmee is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/airmee/](https://apis.io/providers/airmee/)** — or go straight to one of the APIs or properties below.
+
+### APIs (4)
+
+- [Airmee Collection Point Deliveries API](https://apis.io/apis/airmee/airmee-collection-point-deliveries-api/) — The Collection Point Deliveries API from Airmee — 3 operation(s) for collection point deliveries.
+- [Airmee Home Deliveries API](https://apis.io/apis/airmee/airmee-home-deliveries-api/) — The Home Deliveries API from Airmee — 6 operation(s) for home deliveries.
+- [Airmee Parcel Locker Deliveries API](https://apis.io/apis/airmee/airmee-parcel-locker-deliveries-api/) — The Parcel Locker Deliveries API from Airmee — 3 operation(s) for parcel locker deliveries.
+- [Airmee Returns API](https://apis.io/apis/airmee/airmee-returns-api/) — The Returns API from Airmee — 2 operation(s) for returns.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [airmee-mcp.yml](https://apis.io/servers/airmee/airmee-mcp-yml/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Airmee Integration Api Overlay](https://apis.io/overlays/airmee/airmee-integration-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Airmee Authentication](https://apis.io/security/airmee/airmee-authentication/)
+- [Airmee Domain Security](https://apis.io/security/airmee/airmee-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Airmee Plans Pricing](https://apis.io/plans/airmee/airmee-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Airmee Rate Limits](https://apis.io/rate-limits/airmee/airmee-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://airmee.com/)
+- [Documentation](http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/)
+- [API reference](http://integration.docs.airmee.com.s3-website-eu-west-1.amazonaws.com/)
+- [Support](https://airmee.com/en/support/)
+- [Blog](https://airmee.com/en/news/)
+- [Privacy policy](https://airmee.com/en/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 33.5** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 52.7 |
+| Contract governance | 0.0 |
+| Operational transparency | 5.3 |
+| Developer ergonomics | 51.8 |
+| Access clarity | 10.5 |
+
+**Agent readiness 34.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.2** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/airmee/](https://apis.io/providers/airmee/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Airmee: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/airmee/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
